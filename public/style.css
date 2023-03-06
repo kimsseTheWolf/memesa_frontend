@@ -1,0 +1,15 @@
+body{
+    margin: 5px;
+}
+.router-content-style{
+    margin: 5px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 85px;
+    padding: 5px;
+}
+.page-title{
+    color: black;
+    font-size: 30px;
+    font-weight: 800;
+}
