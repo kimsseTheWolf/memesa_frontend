@@ -5,7 +5,11 @@ import HeaderBox from './components/HeaderBox.vue';
 <template>
     <HeaderBox/>
     <div class="router-content-style">
-        <RouterView></RouterView>
+        <RouterView v-slot="{Component}">
+            <Transition name="fade">
+                <Component :is="Component"/>
+            </Transition>
+        </RouterView>
     </div>
 </template>
 <style>

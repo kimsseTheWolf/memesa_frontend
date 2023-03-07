@@ -6,7 +6,8 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    meta: {transition: 'ease'}
   },
   {
     path: '/personHomepage',
@@ -17,6 +18,11 @@ const routes = [
     path: '/workManager',
     name: 'ArtWorksManageCenter',
     component: ()=>import('@/views/VideoManage.vue')
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: ()=>import('@/views/LoginPage.vue')
   }
   
 ]

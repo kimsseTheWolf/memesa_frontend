@@ -3,6 +3,7 @@
     import { Input } from 'ant-design-vue';
     import { Button } from 'ant-design-vue';
     import { Avatar } from 'ant-design-vue';
+
 </script>
 <template>
     <div class="header-box-bg">
@@ -14,7 +15,7 @@
         <Button ghost>
             <img src="../assets/search.svg">
         </Button>
-        <Input width="600px" id="search-input-box" placeholder="搜索meme，音乐，或者视频"/>
+        <Input width="600px" id="search-input-box" placeholder="搜索手书，音乐，或者视频"/>
         <div class="right-align-box">
             <RouterLink to="/workManager" class="right-icons">
                 <img id="clickable" src="../assets/ico_uploadManage.svg">

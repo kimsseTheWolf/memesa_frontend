@@ -13,3 +13,26 @@ body{
     font-size: 30px;
     font-weight: 800;
 }
+.static-warning-block{
+    background-color: #ff990065;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    margin: 7px;
+}
+.static-warning-block-title{
+    font-size: larger;
+    font-weight: 600;
+    color: #f69300;
+    margin: 7px;
+}
+.static-warning-block-content{
+    margin: 5px;
+}
+#display-true{
+    display: unset;
+}
+#display-false{
+    display: none;
+}
