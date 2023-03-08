@@ -1,15 +1,20 @@
 <script setup>
-import { Input, InputPassword, Button } from 'ant-design-vue'
+import { Input, InputPassword, Button, Checkbox } from 'ant-design-vue'
 </script>
 <template>
     <div class="mainDIv">
         <div class="leftDiv"></div>
         <div class="rightDiv">
-            <h1>登录Memesa</h1>
-            在这里登录，或注册一个账号
+            <h1>注册Memesa</h1>
+            欢迎来到Memesa，一个自由的手书分享网站！通过填写以下信息即可完成注册。
             <Input style="width: 90%; margin: 5px;" placeholder="用户名">
                 <template #prefix>
                     <img src="@/assets/user.svg">
+                </template>
+            </Input>
+            <Input style="width: 90%; margin: 5px;" placeholder="邮箱">
+                <template #prefix>
+                    <img src="@/assets/email.svg">
                 </template>
             </Input>
             <InputPassword style="width: 90%; margin: 5px;" placeholder="密码">
@@ -17,9 +22,11 @@ import { Input, InputPassword, Button } from 'ant-design-vue'
                     <img src="@/assets/lock.svg">
                 </template>
             </InputPassword>
-            <Button type="primary" style="margin: 5px;">登录</Button>
-            <RouterLink to="/register">
-                <Button type="link" style="margin: 5px;">注册</Button>
+            <Checkbox>我已同意《用户使用协议与条款》</Checkbox><br>
+            <Button type="primary" style="margin: 5px;">注册</Button>
+            已有账号？
+            <RouterLink to="/login">
+                <Button type="link" style="margin: 5px;">登录</Button>
             </RouterLink>
         </div>
     </div>

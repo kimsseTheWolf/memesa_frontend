@@ -1,11 +1,9 @@
 <script setup>
-import LoginInputBlock from '@/components/LoginInputBlock.vue';
-
-// import { outlinedUser } from '@ant-design/icons-vue'
+import RegisterInputBlock from '@/components/RegisterInputBlock.vue';
 </script>
 <template>
 
-    <LoginInputBlock/>
+    <RegisterInputBlock/>
     
 </template>
 <style>

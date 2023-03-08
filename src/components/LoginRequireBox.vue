@@ -11,6 +11,8 @@ import { Button } from 'ant-design-vue';
             <Button type="primary">立即登录</Button>
         </RouterLink>
         或
-        <Button>注册一个账号</Button>
+        <RouterLink to="/register">
+            <Button>注册一个账号</Button>
+        </RouterLink>
     </div>
 </template>
