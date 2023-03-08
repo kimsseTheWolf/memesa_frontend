@@ -14,13 +14,20 @@ body{
     font-weight: 800;
 }
 .static-warning-block{
-    background-color: #ff990065;
+    /* background-color: #ff990065; */
     border-radius: 5px;
+    background-color: #f6f6f6;
     margin: 5px;
     padding: 5px;
     text-align: center;
     margin: 7px;
+    transition: background-color 0.5s;
+    margin-left: 50px;
+    margin-right: 50px;
 }
+/* .static-warning-block:hover{
+    background-color: #ffe1b5;
+} */
 .static-warning-block-title{
     font-size: larger;
     font-weight: 600;
@@ -29,6 +36,15 @@ body{
 }
 .static-warning-block-content{
     margin: 5px;
+}
+.static-inpage-background{
+    display: inline;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 240, 211);
 }
 #display-true{
     display: unset;

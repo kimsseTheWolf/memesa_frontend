@@ -1,12 +1,14 @@
 <script setup>
-import { Input } from 'ant-design-vue';
+// import { Input, InputPassword, Button } from 'ant-design-vue';
+// import HeaderBox from '@/components/HeaderBox.vue';
+import LoginInputBlock from '@/components/LoginInputBlock.vue';
+
+// import { outlinedUser } from '@ant-design/icons-vue'
 </script>
-<template class="body">
-    <div class="login-dialog-box">
-        <h1 class="title">欢迎！</h1>
-        欢迎来到这个自由的手书分享网站。输入你的用户名以及密码以继续。<br>
-        <Input id="login-input"/>
-    </div>
+<template>
+
+    <LoginInputBlock/>
+    
 </template>
 <style>
 .body{
@@ -23,19 +25,11 @@ import { Input } from 'ant-design-vue';
     left: 0;
     right: 0;
     margin: auto;
-    background-color: white;
-    border-color: orange;
-    border-style: solid;
-    border-width: 1px;
     height: fit-content;
-    width: 500px;
-    border-radius: 7.5px;
-    padding: 10px;
-    margin: 10%, 50%, 50%;
-    text-align: center;
+    width: auto;
 }
 #login-input{
-    width: 90%
+    width: 100%;
 }
 
 </style>
