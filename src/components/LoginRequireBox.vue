@@ -1,5 +1,11 @@
 <script setup>
 import { Button } from 'ant-design-vue';
+// import { ref } from 'vue';
+
+// const username = ref("")
+// const password = ref("")
+// const email = ref("")
+
 </script>
 <template>
     <div class="static-warning-block">

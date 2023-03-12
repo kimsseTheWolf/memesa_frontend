@@ -1,5 +1,20 @@
 <script setup>
-import { Input, InputPassword, Button, Checkbox } from 'ant-design-vue'
+import { Input, InputPassword, Button, Checkbox } from 'ant-design-vue';
+import { ref } from 'vue';
+import {UserRegisterRequest} from '@/request'
+
+const username = ref("")
+const password = ref("")
+const email = ref("")
+
+function getRegisterResult(){
+    console.log(username.value)
+    console.log(password.value)
+    let result = UserRegisterRequest(username.value, password.value, email.value)
+    console.log(result)
+}
+
+
 </script>
 <template>
     <div class="mainDIv">
@@ -7,23 +22,23 @@ import { Input, InputPassword, Button, Checkbox } from 'ant-design-vue'
         <div class="rightDiv">
             <h1>注册Memesa</h1>
             欢迎来到Memesa，一个自由的手书分享网站！通过填写以下信息即可完成注册。
-            <Input style="width: 90%; margin: 5px;" placeholder="用户名">
+            <Input style="width: 90%; margin: 5px;" placeholder="用户名" v-model:value="username">
                 <template #prefix>
                     <img src="@/assets/user.svg">
                 </template>
             </Input>
-            <Input style="width: 90%; margin: 5px;" placeholder="邮箱">
+            <Input style="width: 90%; margin: 5px;" placeholder="邮箱" v-model:value="email">
                 <template #prefix>
                     <img src="@/assets/email.svg">
                 </template>
             </Input>
-            <InputPassword style="width: 90%; margin: 5px;" placeholder="密码">
+            <InputPassword style="width: 90%; margin: 5px;" placeholder="密码" v-model:value="password">
                 <template #prefix>
                     <img src="@/assets/lock.svg">
                 </template>
             </InputPassword>
             <Checkbox>我已同意《用户使用协议与条款》</Checkbox><br>
-            <Button type="primary" style="margin: 5px;">注册</Button>
+            <Button type="primary" style="margin: 5px;" @click="getRegisterResult()">注册</Button>
             已有账号？
             <RouterLink to="/login">
                 <Button type="link" style="margin: 5px;">登录</Button>
