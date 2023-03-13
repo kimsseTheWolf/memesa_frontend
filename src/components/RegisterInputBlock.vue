@@ -1,17 +1,44 @@
 <script setup>
-import { Input, InputPassword, Button, Checkbox } from 'ant-design-vue';
+import { Input, InputPassword, Button, Checkbox, message } from 'ant-design-vue';
+import axios from 'axios';
+import QueryString from 'qs';
 import { ref } from 'vue';
-import {UserRegisterRequest} from '@/request'
 
 const username = ref("")
 const password = ref("")
 const email = ref("")
+const isCheckedELUAAgreement = ref(false)
 
 function getRegisterResult(){
-    console.log(username.value)
-    console.log(password.value)
-    let result = UserRegisterRequest(username.value, password.value, email.value)
-    console.log(result)
+    if (isCheckedELUAAgreement.value == true){
+        // check ull input
+        if (username.value == "" || password.value == "" || email.value == ""){
+            message.error("用户名，邮箱，密码为必填字段")
+            return
+        }
+        let data = {
+            "username": username.value,
+            "password": password.value,
+            "email": email.value
+        }
+        axios({
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post",
+            url: "/user/register",
+            data: QueryString.stringify(data)
+        }).then(info => {
+            message.success("注册成功")
+            console.log(info)
+        }).catch(err => {
+            message.error("注册失败：用户名不合法或已经被占用")
+            console.log(err)
+        })
+    }
+    else{
+        message.info("您需要先同意用户使用条款与协议！")
+    }
 }
 
 
@@ -37,7 +64,7 @@ function getRegisterResult(){
                     <img src="@/assets/lock.svg">
                 </template>
             </InputPassword>
-            <Checkbox>我已同意《用户使用协议与条款》</Checkbox><br>
+            <Checkbox v-model:checked="isCheckedELUAAgreement">我已同意《用户使用协议与条款》</Checkbox><br>
             <Button type="primary" style="margin: 5px;" @click="getRegisterResult()">注册</Button>
             已有账号？
             <RouterLink to="/login">
