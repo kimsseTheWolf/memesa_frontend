@@ -25,6 +25,12 @@ body{
     margin-left: 50px;
     margin-right: 50px;
 }
+.static-content-block{
+    border-radius: 5px;
+    margin: 5px;
+    padding: 7.5px;
+    background-color: #f6f6f6;
+}
 /* .static-warning-block:hover{
     background-color: #ffe1b5;
 } */
