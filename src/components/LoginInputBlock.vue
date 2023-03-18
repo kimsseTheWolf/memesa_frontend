@@ -1,5 +1,5 @@
 <script setup>
-import { Input, InputPassword, Button, message, Checkbox } from 'ant-design-vue'
+import { Input, InputPassword, Button, message, Checkbox, Modal } from 'ant-design-vue'
 import { ref } from 'vue';
 import axios from 'axios';
 import QueryString from 'qs';
@@ -7,6 +7,8 @@ import QueryString from 'qs';
 const username = ref("")
 const password = ref("")
 const keepAlive = ref(false)
+const displaySuccessDialogStatus = ref(false)
+
 
 function getLoginResult(){
     // check input validation
@@ -28,17 +30,21 @@ function getLoginResult(){
         method: "post",
         url: "/user/login",
         data: QueryString.stringify(data)
-    }).then(info => {
+    }).then((info) => {
         const token = info.data.Data
         localStorage.setItem("MEMESA_TOKEN", token)
         message.success("登录成功")
-        this.$router.push("/userHomepage")
-    }).catch(err => {
+        showSuccessDialog()
+    }).catch((err) => {
         message.error("用户名或密码错误")
         console.log(err)
         return
     })
 
+}
+
+function showSuccessDialog(){
+    displaySuccessDialogStatus.value = true
 }
 
 </script>
@@ -63,6 +69,14 @@ function getLoginResult(){
             <RouterLink to="/register">
                 <Button type="link" style="margin: 5px;">注册</Button>
             </RouterLink>
+            <Modal title="登录成功！" v-model:visible="displaySuccessDialogStatus">
+                <p>您现在可以访问所有的Memesa功能了。</p>
+                <template #footer>
+                    <RouterLink to="/personHomepage">
+                        <Button type="primary">前往个人主页</Button>
+                    </RouterLink>
+                </template>
+            </Modal>
         </div>
     </div>
 </template>

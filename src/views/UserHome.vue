@@ -1,7 +1,7 @@
 <script setup>
 import LoginRequireBox from '@/components/LoginRequireBox.vue'
 import { computed, ref } from 'vue';
-import { Avatar, Button, message } from 'ant-design-vue';
+import { Avatar, Button, message, Modal } from 'ant-design-vue';
 import axios from 'axios';
 
 const isLoggedIn = computed(()=>{
@@ -18,6 +18,7 @@ const email = ref("未知邮箱")
 const userid = ref("未知UID")
 const description = ref("这个人很懒，什么也没写……")
 const password = ref("no_password")
+const logoutUserWarningDlgStatus = ref(false)
 
 
 function gatherUserInfo(){
@@ -43,6 +44,19 @@ function gatherUserInfo(){
         message.error("啊哦！我们在获取你的账号信息时出现了一些问题QAQ")
     })
 }
+
+function deleteLocalUser(){
+    localStorage.clear()
+    hideLogoutUserWarning()
+}
+
+function showLogoutUserWarning(){
+    logoutUserWarningDlgStatus.value = true
+}
+
+function hideLogoutUserWarning(){
+    logoutUserWarningDlgStatus.value = false
+}
 window.onload = gatherUserInfo
 </script>
 <template>
@@ -65,12 +79,21 @@ window.onload = gatherUserInfo
             </div>
             
         </div>
+        <div class="static-content-block">
+            <h2>这个账号不是我！</h2>
+            如果您因为某些原因想要切换账号或者退出登录，你可以使用以下选项：<br>
+            <Button type="primary" danger class="inline-button" @click="showLogoutUserWarning()">退出登录</Button>
+            <Button type="default" class="inline-button">切换账号</Button>
+            <Modal v-model:visible="logoutUserWarningDlgStatus" title="您确定要登出吗？" @ok="deleteLocalUser" @cancel="hideLogoutUserWarning">
+                <p>您确定要继续在此设备上退出登录吗？这不会删除您的账号数据。</p>
+            </Modal>
+        </div>
     </div>
 </template>
 <style>
 .static-content-block{
     border-radius: 5px;
-    margin: 5px;
+    margin: 10px;
     padding: 15px;
     width: auto;
     height: fit-content;
@@ -84,5 +107,8 @@ window.onload = gatherUserInfo
     padding-left: 10px;
     padding-bottom: 10px;
     width: 90%;
+}
+.inline-button{
+    margin: 5px;
 }
 </style>
