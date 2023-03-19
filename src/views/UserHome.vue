@@ -1,8 +1,9 @@
 <script setup>
 import LoginRequireBox from '@/components/LoginRequireBox.vue'
 import { computed, ref } from 'vue';
-import { Avatar, Button, message, Modal } from 'ant-design-vue';
+import { Avatar, Button, message, Modal, Input, Textarea } from 'ant-design-vue';
 import axios from 'axios';
+import QueryString from 'qs';
 
 const isLoggedIn = computed(()=>{
     if (localStorage.getItem("MEMESA_TOKEN") == null){
@@ -18,7 +19,10 @@ const email = ref("未知邮箱")
 const userid = ref("未知UID")
 const description = ref("这个人很懒，什么也没写……")
 const password = ref("no_password")
+const newUsername = ref("")
+const newDescription = ref("")
 const logoutUserWarningDlgStatus = ref(false)
+const basicInfoModifyWindowStatus = ref(false)
 
 
 function gatherUserInfo(){
@@ -45,6 +49,48 @@ function gatherUserInfo(){
     })
 }
 
+function modifyUserInfo(){
+    let userToken = localStorage.getItem("MEMESA_TOKEN")
+    // check input
+    if (newUsername.value == ""){
+        newUsername.value = username.value
+    }
+    if (newDescription.value == ""){
+        newDescription.value = description.value
+    }
+    // generate requesyt body
+    let requestData = {
+        "username": newUsername.value,
+        "description": newDescription.value,
+    }
+    console.log(requestData)
+    // send request
+    axios({
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": userToken
+        },
+        method: "post",
+        url: "/user/modifyBasicUserInfo",
+        data: QueryString.stringify(requestData)
+    }).then(data => {
+        if (data.data.Code == 200){
+            // get and reapply the new token from the respond
+            localStorage.removeItem("MEMESA_TOKEN")
+            localStorage.setItem("MEMESA_TOKEN", data.data.Data)
+            message.success("用户基本信息更改成功！")
+            hideModifyInfoDialog()
+        }
+        else{
+            message.error("名字貌似被用了，要不咱换一个？")
+        }
+        
+    }).catch(err => {
+        console.log(err)
+        message.error("名字貌似被用了，要不咱换一个？")
+    })
+}
+
 function deleteLocalUser(){
     localStorage.clear()
     hideLogoutUserWarning()
@@ -57,6 +103,14 @@ function showLogoutUserWarning(){
 function hideLogoutUserWarning(){
     logoutUserWarningDlgStatus.value = false
 }
+
+function showModifyInfoDialog(){
+    basicInfoModifyWindowStatus.value = true
+}
+
+function hideModifyInfoDialog(){
+    basicInfoModifyWindowStatus.value = false
+}
 window.onload = gatherUserInfo
 </script>
 <template>
@@ -67,10 +121,26 @@ window.onload = gatherUserInfo
             <div id="inline-display">
                 <Avatar :size="60">用户</Avatar>
                 <span class="inline-title">
-                    <h1 style="width: fit-content;">{{ username }}</h1>
+                    <h1 style="width: fit-content;" class="user-title">{{ username }}</h1>
                     <div style="width: fit-content;">{{ description }}</div>
                 </span>
-                <Button type="primary">修改我的个人资料</Button>
+                <Button type="primary" @click="showModifyInfoDialog">修改我的个人资料</Button>
+                <Modal title="修改您的基本个人信息" v-model:visible="basicInfoModifyWindowStatus" @cancel="hideModifyInfoDialog()">
+                    您可以在这里修改您的个人昵称与简介。如果您需要修改邮箱或者密码，请移步至设置。<br>
+                    若您不想更改某个信息，留空即可。<br>
+                    <b>新的用户名</b>
+                    <Input placeholder="新的用户名" class="inline-button" v-model:value="newUsername">
+                        <template #prefix>
+                            <img src="@/assets/user.svg">
+                        </template>
+                    </Input>
+                    <b>新的简介（200字以内）</b>
+                    <Textarea placeholder="新的简介（200字以内）" class="inline-button" v-model:value="newDescription">
+                    </Textarea>
+                    <template #footer>
+                        <Button type="primary" @click="modifyUserInfo">修改</Button>
+                    </template>
+                </Modal>
             </div>
             <div>
                 <b>关注数：</b> | 
@@ -110,5 +180,8 @@ window.onload = gatherUserInfo
 }
 .inline-button{
     margin: 5px;
+}
+.user-title{
+    margin-bottom: 0px;
 }
 </style>
