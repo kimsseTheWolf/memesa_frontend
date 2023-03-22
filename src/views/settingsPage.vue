@@ -9,12 +9,16 @@ import { Layout, LayoutSider, LayoutContent, Menu, SubMenu, MenuItem, MenuItemGr
                 <SubMenu key="user">
                     <template #title>用户</template>
                     <MenuItemGroup>
-                        <MenuItem key="user/basicInformation">基本用户信息</MenuItem>
-                        <MenuItem key="user/sensitiveInformation">基本敏感信息</MenuItem>
-                        <MenuItem key="user/agreement">用户协议与服务条款</MenuItem>
-                        <MenuItem key="user/logout">登出</MenuItem>
-                        <MenuItem key="user/clearLocal">删除本地用户信息</MenuItem>
-                        <MenuItem key="user/test">测试页面</MenuItem>
+                        <RouterLink class="normal" to="/settings/user/basicInfo">
+                            <MenuItem key="user/basicInformation">用户名与简介</MenuItem>
+                        </RouterLink>
+                        <MenuItem key="user/sensitiveInformation">邮箱与密码</MenuItem>
+                        <RouterLink class="normal" to="/settings/user/agreement">
+                            <MenuItem key="user/agreement">用户协议与服务条款</MenuItem>
+                        </RouterLink>
+                        <RouterLink class="normal" to="/settings/user/logout">
+                            <MenuItem key="user/logout">账号管理</MenuItem>
+                        </RouterLink>
                     </MenuItemGroup>
                 </SubMenu>
             
@@ -22,7 +26,9 @@ import { Layout, LayoutSider, LayoutContent, Menu, SubMenu, MenuItem, MenuItemGr
         </LayoutSider>
         <LayoutContent style="height: 700px; padding: 30px;">
             <div class="settings-content-box">
-                
+                <RouterView>
+
+                </RouterView>
             </div>
         </LayoutContent>
     </Layout>
@@ -35,5 +41,8 @@ import { Layout, LayoutSider, LayoutContent, Menu, SubMenu, MenuItem, MenuItemGr
     background-color: white;
     overflow: auto;
     padding: 30px;
+}
+.normal{
+    color: black;
 }
 </style>

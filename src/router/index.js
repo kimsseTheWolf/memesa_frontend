@@ -32,7 +32,21 @@ const routes = [
   {
     path: '/settings',
     name: 'Settings Page',
-    component: ()=>import('@/views/settingsPage.vue')
+    component: ()=>import('@/views/settingsPage.vue'),
+    children: [
+      {
+        path: 'user/basicInfo',
+        component: ()=>import('@/views/settings/userSettingsBasicInfo.vue')
+      },
+      {
+        path: 'user/logout',
+        component: ()=>import('@/views/settings/userSettingsLogout.vue')
+      },
+      {
+        path: 'user/agreement',
+        component: ()=>import('@/views/settings/userSettingsContract.vue')
+      }
+    ]
   },
   
 ]

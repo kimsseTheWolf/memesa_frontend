@@ -1,6 +1,6 @@
 <script setup>
 import LoginRequireBox from '@/components/LoginRequireBox.vue'
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { Avatar, Button, message, Modal, Input, Textarea } from 'ant-design-vue';
 import axios from 'axios';
 import QueryString from 'qs';
@@ -115,7 +115,7 @@ function showModifyInfoDialog(){
 function hideModifyInfoDialog(){
     basicInfoModifyWindowStatus.value = false
 }
-window.onload = gatherUserInfo
+onMounted(()=>gatherUserInfo)
 </script>
 <template>
     <h1 class="page-title">我</h1>
