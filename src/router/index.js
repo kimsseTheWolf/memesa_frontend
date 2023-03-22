@@ -28,7 +28,12 @@ const routes = [
     path: '/register',
     name: 'Register Page',
     component: ()=>import('@/views/RegisterPage.vue')
-  }
+  },
+  {
+    path: '/settings',
+    name: 'Settings Page',
+    component: ()=>import('@/views/settingsPage.vue')
+  },
   
 ]
 

@@ -4,6 +4,7 @@ import { computed, ref } from 'vue';
 import { Avatar, Button, message, Modal, Input, Textarea } from 'ant-design-vue';
 import axios from 'axios';
 import QueryString from 'qs';
+import inlineContentBox from '@/components/inlineContentBox.vue';
 
 const isLoggedIn = computed(()=>{
     if (localStorage.getItem("MEMESA_TOKEN") == null){
@@ -23,7 +24,6 @@ const newUsername = ref("")
 const newDescription = ref("")
 const logoutUserWarningDlgStatus = ref(false)
 const basicInfoModifyWindowStatus = ref(false)
-
 
 function gatherUserInfo(){
     // send request to get user information from the db
@@ -57,6 +57,10 @@ function modifyUserInfo(){
     }
     if (newDescription.value == ""){
         newDescription.value = description.value
+    }
+    if (newDescription.value.length > 200){
+        message.warning("简介太长啦！")
+        return
     }
     // generate requesyt body
     let requestData = {
@@ -137,6 +141,7 @@ window.onload = gatherUserInfo
                     <b>新的简介（200字以内）</b>
                     <Textarea placeholder="新的简介（200字以内）" class="inline-button" v-model:value="newDescription">
                     </Textarea>
+                    <Button type="primary">前往修改我的邮箱或者密码</Button>
                     <template #footer>
                         <Button type="primary" @click="modifyUserInfo">修改</Button>
                     </template>
@@ -148,6 +153,24 @@ window.onload = gatherUserInfo
                 <b>稿件数：</b> |
             </div>
             
+        </div>
+        <div class="static-content-block">
+            <h2>我的稿件</h2>
+            你近期的作品会在这里展示，更多历史作品请前往稿件中心<br>
+            <Button type="primary">前往稿件中心</Button>
+        </div>
+        <div class="static-content-block">
+            <h2>我的动态</h2>
+            最近的动态将会展示在这里，更多历史动态请前往动态页面<br>
+            <Button type="primary">前往动态</Button>
+        </div>
+        <div class="static-content-block">
+            <h2>更多功能</h2>
+            <RouterLink to="/settings">
+                <inlineContentBox content="设置" icon="settings"/>
+            </RouterLink>
+            <inlineContentBox content="账号选项" icon="user"/>
+            <inlineContentBox content="答疑中心" icon="contact"/>
         </div>
         <div class="static-content-block">
             <h2>这个账号不是我！</h2>
