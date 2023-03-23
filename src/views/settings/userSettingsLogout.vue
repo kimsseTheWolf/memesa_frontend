@@ -88,7 +88,7 @@ function showDeleteSuccessDlgStatus(){
         <InputPassword placeholder="密码" class="with-margin"/>
         <template #footer>
             <Button type="primary">验证</Button>
-            <Button>取消</Button>
+            <Button @click="hidePasswdVerifier">取消</Button>
         </template>
     </Modal>
 </template>
