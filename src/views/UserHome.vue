@@ -22,7 +22,6 @@ const description = ref("这个人很懒，什么也没写……")
 const password = ref("no_password")
 const newUsername = ref("")
 const newDescription = ref("")
-const logoutUserWarningDlgStatus = ref(false)
 const basicInfoModifyWindowStatus = ref(false)
 
 function gatherUserInfo(){
@@ -95,18 +94,6 @@ function modifyUserInfo(){
     })
 }
 
-function deleteLocalUser(){
-    localStorage.clear()
-    hideLogoutUserWarning()
-}
-
-function showLogoutUserWarning(){
-    logoutUserWarningDlgStatus.value = true
-}
-
-function hideLogoutUserWarning(){
-    logoutUserWarningDlgStatus.value = false
-}
 
 function showModifyInfoDialog(){
     basicInfoModifyWindowStatus.value = true
@@ -115,7 +102,8 @@ function showModifyInfoDialog(){
 function hideModifyInfoDialog(){
     basicInfoModifyWindowStatus.value = false
 }
-onMounted(()=>gatherUserInfo)
+onMounted(()=>console.log("App mounted"))
+gatherUserInfo()
 </script>
 <template>
     <h1 class="page-title">我</h1>
@@ -172,15 +160,7 @@ onMounted(()=>gatherUserInfo)
             <inlineContentBox content="账号选项" icon="user"/>
             <inlineContentBox content="答疑中心" icon="contact"/>
         </div>
-        <div class="static-content-block">
-            <h2>这个账号不是我！</h2>
-            如果您因为某些原因想要切换账号或者退出登录，你可以使用以下选项：<br>
-            <Button type="primary" danger class="inline-button" @click="showLogoutUserWarning()">退出登录</Button>
-            <Button type="default" class="inline-button">切换账号</Button>
-            <Modal v-model:visible="logoutUserWarningDlgStatus" title="您确定要登出吗？" @ok="deleteLocalUser" @cancel="hideLogoutUserWarning">
-                <p>您确定要继续在此设备上退出登录吗？这不会删除您的账号数据。</p>
-            </Modal>
-        </div>
+        
     </div>
 </template>
 <style>

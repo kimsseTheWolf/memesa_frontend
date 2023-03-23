@@ -77,6 +77,7 @@ function modifyUserInfo(){
 }
 
 onMounted(()=>gatherUserInfo)
+gatherUserInfo()
 
 </script>
 <template>
