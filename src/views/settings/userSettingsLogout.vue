@@ -1,10 +1,12 @@
 <script setup>
-import { Button, Modal, Divider, Alert, message } from 'ant-design-vue';
+import { Button, Modal, Divider, Alert, message, Input, InputPassword } from 'ant-design-vue';
 import { ref } from 'vue'
 import router from '@/router'
+import VerifyPassword from '../VerifyPassword.vue';
 
 const logoutUserWarningDlgStatus = ref(false)
 const deleteSuccessDlgStatus = ref(false)
+const passwordVerifierStatus = ref(false)
 
 function showLogoutUserWarning(){
     logoutUserWarningDlgStatus.value = true
@@ -21,6 +23,14 @@ function hideLogoutUserWarning(){
     logoutUserWarningDlgStatus.value = false
 }
 
+function showPasswdVerifier(){
+    passwordVerifierStatus.value = true
+}
+
+
+function hidePasswdVerifier(){
+    passwordVerifierStatus.value = false
+}
 function showDeleteSuccessDlgStatus(){
     Modal.confirm({
         title: "您已成功登出",
@@ -40,9 +50,10 @@ function showDeleteSuccessDlgStatus(){
 // }
 </script>
 <template>
+    <VerifyPassword username="unknown" :showDialog="false"/>
     <h2>退出登录</h2>
     若您需要切换账号或者退出登录，您可以直接点击退出登录。这不会删除您的账号个人数据。<br>
-    <Button type="primary" danger class="inline-button" @click="showLogoutUserWarning()">退出登录</Button>
+    <Button type="primary" class="inline-button" @click="showLogoutUserWarning()">退出登录</Button>
     <Modal v-model:visible="logoutUserWarningDlgStatus" title="您确定要登出吗？" @ok="deleteLocalUser" @cancel="hideLogoutUserWarning">
         <p>您确定要继续在此设备上退出登录吗？这不会删除您的账号数据。</p>
         <template #footer>
@@ -65,5 +76,24 @@ function showDeleteSuccessDlgStatus(){
     <Divider/>
     <h2>注销账号</h2>
     <Alert message="您需要谨慎操作此部分的内容。平台对您的不谨慎操作不负任何责任" type="error"></Alert>
-    账号注销后您的账号将不再可用且无法撤销。您可以选择是否保存您的作品和动态。
+    账号注销后您的账号将不再可用且无法撤销。您可以选择是否保存您的作品和动态。<br>
+    <Button type="danger" @click="showPasswdVerifier()">注销账号</Button>
+    <Modal title="密码验证" :visible="passwordVerifierStatus" @cancel="hidePasswdVerifier">
+        为了您的账号安全，您需要输入账号密码以验证输入。
+        <Input placeholder="用户名" value="unknown" readonly class="with-margin">
+            <template #prefix>
+                <img src="@/assets/user.svg">
+            </template>
+        </Input>
+        <InputPassword placeholder="密码" class="with-margin"/>
+        <template #footer>
+            <Button type="primary">验证</Button>
+            <Button>取消</Button>
+        </template>
+    </Modal>
 </template>
+<style>
+.with-margin{
+    margin: 5px;
+}
+</style>

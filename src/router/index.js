@@ -45,6 +45,10 @@ const routes = [
       {
         path: 'user/agreement',
         component: ()=>import('@/views/settings/userSettingsContract.vue')
+      },
+      {
+        path: 'user/sensitiveInformation',
+        component: ()=>import('@/views/settings/userSettingsPassword.vue')
       }
     ]
   },
