@@ -1,11 +1,14 @@
 <script setup>
 import { Layout, LayoutSider, LayoutContent, Menu, SubMenu, MenuItem, MenuItemGroup } from 'ant-design-vue';
+import { ref } from 'vue'
+
+const selectedKeys = ref(['user'])
 </script>
 <template>
     <h1>设置</h1>
     <Layout>
         <LayoutSider style="width: 200px; overflow: auto; height: 700px; background-color: #fdfdfd;">
-            <Menu mode="inline" style="height: 100%;" theme="light">
+            <Menu mode="inline" style="height: 100%;" theme="light" v-model:open-keys="selectedKeys">
                 <SubMenu key="user">
                     <template #title>用户</template>
                     <MenuItemGroup>

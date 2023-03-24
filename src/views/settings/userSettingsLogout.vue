@@ -2,7 +2,7 @@
 import { Button, Modal, Divider, Alert, message, Input, InputPassword } from 'ant-design-vue';
 import { ref } from 'vue'
 import router from '@/router'
-import VerifyPassword from '../VerifyPassword.vue';
+import VerifyPassword from '../../components/VerifyPassword.vue';
 
 const logoutUserWarningDlgStatus = ref(false)
 const deleteSuccessDlgStatus = ref(false)

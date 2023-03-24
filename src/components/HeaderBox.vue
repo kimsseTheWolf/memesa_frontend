@@ -3,6 +3,36 @@
     import { Input } from 'ant-design-vue';
     import { Button } from 'ant-design-vue';
     import { Avatar } from 'ant-design-vue';
+    import { Popover } from 'ant-design-vue';
+    import { ref } from 'vue';
+    import axios from 'axios';
+    import { message } from 'ant-design-vue';
+
+    const username = ref("")
+    const description = ref("")
+
+    function gatherUserInfo(){
+        // send request to get user information from the db
+        let userToken = localStorage.getItem("MEMESA_TOKEN")
+        console.log(userToken)
+        axios({
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": userToken
+            },
+            method: "post",
+            url: "/user/getUserInfo",
+        }).then(data => {
+            console.log(data)
+            username.value = data.data.Data.username
+            description.value = data.data.Data.description
+        }).catch(err => {
+            console.log(err)
+            message.error("啊哦！我们在获取你的账号信息时出现了一些问题QAQ")
+        })
+    }
+
+    setTimeout(gatherUserInfo, 500)
 
 </script>
 <template>
@@ -20,9 +50,35 @@
             <RouterLink to="/workManager" class="right-icons">
                 <img id="clickable" src="../assets/ico_uploadManage.svg">
             </RouterLink>
-            <RouterLink to="/personHomepage">
-                <Avatar size="large" id="clickable">登录</Avatar>
-            </RouterLink>
+            <Popover title="个人中心" style="width: 200px;">
+                <Avatar size="large" id="clickable">
+                    <RouterLink to="/personHomepage" class="normal-link">登录</RouterLink>
+                </Avatar>
+                <template #content>
+                    点击进入个人中心！<br>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <div v-if="username == ''">
+                            登录即可享受全部功能哦！<br>
+                            <Button type="primary">登录</Button><br>
+                            <Button>注册</Button>
+                        </div>
+                        <div v-else>
+                            <Avatar size="large"></Avatar><br>
+                            <b>{{ username }}</b>
+                            <div style="color:gray;">
+                                {{ description }}
+                            </div>
+                            <RouterLink to="/personHomepage" style="color: white;">
+                                <Button type="primary">前往个人主页</Button>
+                            </RouterLink>
+                            <br>
+                            <RouterLink to="/settings/user/logout" style="color: white; margin-top: 10px;">
+                                <Button type="link" danger>退出登录</Button>
+                            </RouterLink>
+                        </div>
+                    </div>
+                </template>
+            </Popover>
         </div>
     </div>
 </template>
@@ -74,5 +130,11 @@
 }
 #clickable{
     cursor: pointer;
+}
+.normal-link{
+    color: white;
+}
+.normal-link:hover{
+    color: white;
 }
 </style>

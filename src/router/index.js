@@ -52,6 +52,16 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/faq',
+    name: ' Q&A Section',
+    component: ()=>import('@/views/QAndA.vue')
+  },
+  {
+    path: '/moment',
+    name: 'User Moments',
+    component: ()=>import('@/views/MomentsPage.vue')
+  }
   
 ]
 

@@ -145,20 +145,28 @@ gatherUserInfo()
         <div class="static-content-block">
             <h2>我的稿件</h2>
             你近期的作品会在这里展示，更多历史作品请前往稿件中心<br>
-            <Button type="primary">前往稿件中心</Button>
+            <RouterLink to="/workManager">
+                <Button type="primary">前往稿件中心</Button>
+            </RouterLink>
         </div>
         <div class="static-content-block">
             <h2>我的动态</h2>
             最近的动态将会展示在这里，更多历史动态请前往动态页面<br>
-            <Button type="primary">前往动态</Button>
+            <RouterLink to="/moment">
+                <Button type="primary">前往动态</Button>
+            </RouterLink>
         </div>
         <div class="static-content-block">
             <h2>更多功能</h2>
             <RouterLink to="/settings">
                 <inlineContentBox content="设置" icon="settings"/>
             </RouterLink>
-            <inlineContentBox content="账号选项" icon="user"/>
-            <inlineContentBox content="答疑中心" icon="contact"/>
+            <RouterLink to="/settings/user/basicInfo">
+                <inlineContentBox content="账号选项" icon="user"/>
+            </RouterLink>
+            <RouterLink to="/faq">
+                <inlineContentBox content="答疑中心" icon="contact"/>
+            </RouterLink>
         </div>
         
     </div>
