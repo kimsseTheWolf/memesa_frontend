@@ -59,8 +59,12 @@
                     <div style="text-align: center; margin-top: 10px;">
                         <div v-if="username == ''">
                             登录即可享受全部功能哦！<br>
-                            <Button type="primary">登录</Button><br>
-                            <Button>注册</Button>
+                            <RouterLink to="/login">
+                                <Button type="primary">登录</Button>
+                            </RouterLink>
+                            <RouterLink to="/register">
+                                <Button>注册</Button>
+                            </RouterLink>
                         </div>
                         <div v-else>
                             <Avatar size="large"></Avatar><br>

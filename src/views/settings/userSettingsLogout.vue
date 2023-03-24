@@ -3,10 +3,34 @@ import { Button, Modal, Divider, Alert, message, Input, InputPassword } from 'an
 import { ref } from 'vue'
 import router from '@/router'
 import VerifyPassword from '../../components/VerifyPassword.vue';
+import axios from 'axios';
 
 const logoutUserWarningDlgStatus = ref(false)
 const deleteSuccessDlgStatus = ref(false)
 const passwordVerifierStatus = ref(false)
+const username = ref("")
+const description = ref("")
+
+function gatherUserInfo(){
+    // send request to get user information from the db
+    let userToken = localStorage.getItem("MEMESA_TOKEN")
+    console.log(userToken)
+    axios({
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": userToken
+        },
+        method: "post",
+        url: "/user/getUserInfo",
+    }).then(data => {
+        console.log(data)
+        username.value = data.data.Data.username
+        description.value = data.data.Data.description
+    }).catch(err => {
+        console.log(err)
+        message.error("啊哦！我们在获取你的账号信息时出现了一些问题QAQ")
+    })
+}
 
 function showLogoutUserWarning(){
     logoutUserWarningDlgStatus.value = true
@@ -44,6 +68,31 @@ function showDeleteSuccessDlgStatus(){
             router.push("/register")
         }
     })
+}
+
+gatherUserInfo()
+
+// TODO: Password verification service code first.
+
+function removeUserFromDB(){
+    // final confirmation from the user
+    Modal.confirm({
+        title: "您确定您要继续注销账号吗？",
+        content: "注销账号意味着您的账号将会被删除，这个操作是无法撤销的，您确定要继续吗？",
+        okText: "确定",
+        cancelText: "取消",
+        onCancel(){
+            router.push("/settings")
+        }
+    })
+    // send a request to the server that to delete the user from the database
+    axios({
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": localStorage.getItem("MEMESA_TOKEN")
+        }
+    })
+
 }
 // function hideDeleteSuccessDlg(){
 //     deleteSuccessDlgStatus.value = false
