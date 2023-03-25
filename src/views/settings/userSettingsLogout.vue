@@ -4,12 +4,14 @@ import { ref } from 'vue'
 import router from '@/router'
 import VerifyPassword from '../../components/VerifyPassword.vue';
 import axios from 'axios';
+import QueryString from 'qs';
 
 const logoutUserWarningDlgStatus = ref(false)
 const deleteSuccessDlgStatus = ref(false)
 const passwordVerifierStatus = ref(false)
 const username = ref("")
 const description = ref("")
+const verifyInputPassword = ref("")
 
 function gatherUserInfo(){
     // send request to get user information from the db
@@ -73,8 +75,36 @@ function showDeleteSuccessDlgStatus(){
 gatherUserInfo()
 
 // TODO: Password verification service code first.
+function verifyUserPassword() {
+    let requestData = {
+        "password": verifyInputPassword.value
+    }
+    // send request
+    axios({
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": localStorage.getItem("MEMESA_TOKEN")
+        },
+        method: "post",
+        url: "/user/checkPassword",
+        data: QueryString.stringify(requestData)
+    }).then(data => {
+        if (data.data.Message == "true"){
+            removeUserWarningDialog()
+            return true
+        }
+        else{
+            message.error("密码错误")
+            return false
+        }
+    }).catch(err => {
+        console.log(err)
+        message.error("我们在验证你的账户时出现了一些问题")
+        return false
+    })
+}
 
-function removeUserFromDB(){
+function removeUserWarningDialog(){
     // final confirmation from the user
     Modal.confirm({
         title: "您确定您要继续注销账号吗？",
@@ -83,20 +113,48 @@ function removeUserFromDB(){
         cancelText: "取消",
         onCancel(){
             router.push("/settings")
+        },
+        onOk(){
+            let result = deleteServerUser()
+            if (!result){
+                message.error("删除失败")
+                return
+            }
+            else{
+                showDeleteSuccessDlgStatus()
+                return
+            }
         }
     })
+
+}
+
+function deleteServerUser(){
     // send a request to the server that to delete the user from the database
     axios({
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": localStorage.getItem("MEMESA_TOKEN")
+        },
+        method: "post",
+        url: "/user/deleteUser"
+    }).then(data => {
+        if (data.data.Code == 200){
+            localStorage.clear()
+            message.success("用户注销成功")
+            return true
         }
+        else{
+            message.error("用户注销失败")
+            return false
+        }
+    }).catch(err => {
+        console.log(err)
+        message.error("用户注销失败")
+        return false
     })
-
 }
-// function hideDeleteSuccessDlg(){
-//     deleteSuccessDlgStatus.value = false
-// }
+
 </script>
 <template>
     <VerifyPassword username="unknown" :showDialog="false"/>
@@ -129,14 +187,14 @@ function removeUserFromDB(){
     <Button type="danger" @click="showPasswdVerifier()">注销账号</Button>
     <Modal title="密码验证" :visible="passwordVerifierStatus" @cancel="hidePasswdVerifier">
         为了您的账号安全，您需要输入账号密码以验证输入。
-        <Input placeholder="用户名" value="unknown" readonly class="with-margin">
+        <Input placeholder="用户名" :value="username" readonly class="with-margin">
             <template #prefix>
                 <img src="@/assets/user.svg">
             </template>
         </Input>
-        <InputPassword placeholder="密码" class="with-margin"/>
+        <InputPassword placeholder="密码" class="with-margin" v-model:value="verifyInputPassword"/>
         <template #footer>
-            <Button type="primary">验证</Button>
+            <Button type="primary" @click="verifyUserPassword">验证</Button>
             <Button @click="hidePasswdVerifier">取消</Button>
         </template>
     </Modal>

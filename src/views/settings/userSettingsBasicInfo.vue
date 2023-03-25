@@ -1,6 +1,6 @@
 <script setup>
 
-import { Button, Input, Textarea, message } from 'ant-design-vue';
+import { Button, Input, Textarea, message, Divider, Upload } from 'ant-design-vue';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import QueryString from 'qs';
@@ -8,6 +8,8 @@ const newUsername = ref("")
 const newDescription = ref("")
 const username = ref("")
 const description = ref("")
+const fileList = ref([])
+const uploadingAvatar = ref(false)
 
 function gatherUserInfo(){
     // send request to get user information from the db
@@ -76,13 +78,37 @@ function modifyUserInfo(){
     })
 }
 
+function beforeUpload(file) {
+    let isCorrectFileType = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/png'
+    let isCorrectSize = file.size / 1024 / 1024 <= 2
+    // check how many files user has already uploaded first
+    if (fileList.value.length >= 1){
+        message.error("最多只能上传一个文件！")
+        return Upload.LIST_IGNORE
+    }
+    else if (!isCorrectFileType){
+        message.error("不兼容的文件格式。只兼容jpg / jpeg / png文件")
+        return isCorrectFileType || Upload.LIST_IGNORE
+    }
+    else if (!isCorrectSize){
+        message.error("文件过大。一个文件最大只能2MB")
+        return isCorrectSize || Upload.LIST_IGNORE
+    }
+    else{
+        // if passed then process the list and wait for further information
+        fileList.value.push(file)
+        return false
+    }
+    
+}
+
 onMounted(()=>gatherUserInfo)
 gatherUserInfo()
 
 </script>
 <template>
-    <h2>用户名与简介</h2>
-    您可以在这里修改您的个人昵称与简介。如果您需要修改邮箱或者密码，请移步至设置。<br>
+    <h2>用户与简介</h2>
+    您可以在这里修改您的个人昵称与简介。如果您需要修改邮箱或者密码，请移步至密码与邮箱设置。<br>
     若您不想更改某个信息，留空即可。<br>
     <b>当前用户名：</b>{{ username }}<br>
     <b>当前简介：</b> {{ description }}<br>
@@ -96,6 +122,14 @@ gatherUserInfo()
     <Textarea placeholder="新的简介（200字以内）" class="inline-button" v-model:value="newDescription">
     </Textarea>
     <Button type="primary" class="inline-button" @click="modifyUserInfo">修改</Button>
+
+    <Divider></Divider>
+    <h2>头像设置</h2>
+    您可以在这里上传您的头像，头像文件大小不要超过5MB<br>
+    <Upload v-model:file-list="fileList" :before-upload="beforeUpload" list-type="picture">
+        <Button type="primary" :disabled="fileList.length >= 1">选择图片</Button>
+    </Upload>
+    <Button type="primary" :disabled="fileList.length === 0" :loading="uploadingAvatar" style="margin: 5px;">上传并作为我的新头像</Button>
     
 </template>
 <style>

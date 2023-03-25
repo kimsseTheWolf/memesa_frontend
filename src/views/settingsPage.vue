@@ -13,7 +13,7 @@ const selectedKeys = ref(['user'])
                     <template #title>用户</template>
                     <MenuItemGroup>
                         <RouterLink class="normal" to="/settings/user/basicInfo">
-                            <MenuItem key="user/basicInformation">用户名与简介</MenuItem>
+                            <MenuItem key="user/basicInformation">用户，简介与头像</MenuItem>
                         </RouterLink>
                         <RouterLink class="normal" to="/settings/user/sensitiveInformation">
                             <MenuItem key="user/sensitiveInformation">邮箱与密码</MenuItem>
