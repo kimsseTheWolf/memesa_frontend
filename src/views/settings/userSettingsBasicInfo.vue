@@ -4,6 +4,7 @@ import { Button, Input, Textarea, message, Divider, Upload } from 'ant-design-vu
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import QueryString from 'qs';
+import avatarHandler from '@/js/avatar'
 const newUsername = ref("")
 const newDescription = ref("")
 const username = ref("")
@@ -100,6 +101,34 @@ function beforeUpload(file) {
         return false
     }
     
+}
+
+function uploadAvatar(){
+    // store the file to the external server first
+    let avatarServerToken = avatarHandler.generateAccessToken()
+    // upload
+    let targetData = {
+        "smfile": fileList.value[0],
+        "format": "json"
+    }
+    axios({
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": avatarServerToken
+        },
+        data: QueryString.stringify(targetData),
+        method: "post",
+        url: avatarHandler.apiBaseAddress + "/upload"
+    }).then(data => {
+        if (data.data.success != "true"){
+            message.error("头像上传失败")
+            return
+        }
+        // gather the url of the image
+        let userAvatarAddress = data.data.data.url
+        // save the url in local and our own server
+        localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
+    })
 }
 
 onMounted(()=>gatherUserInfo)
