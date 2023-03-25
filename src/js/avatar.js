@@ -5,7 +5,7 @@ export default{
     externalServerAddress: "",
     username: "",
     password: "",
-    apiBaseAddress: "https://sm.ms/api/v2/",
+    apiBaseAddress: "https://sm.ms/api/v2",
     generateAccessToken: function (){
         let requireData = {
             "username": this.username,
@@ -14,9 +14,13 @@ export default{
         let targetToken = ""
         // send request
         axios({
+            headers: {
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': true
+            },
             data: QueryString.stringify(requireData),
             method: "post",
-            url: this.apiBaseAddress + "/token"
+            url: this.apiBaseAddress + "/token",
         }).then(data => {
             // get status
             if (data.data.success != "true"){

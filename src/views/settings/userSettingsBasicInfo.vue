@@ -67,7 +67,6 @@ function modifyUserInfo(){
             localStorage.removeItem("MEMESA_TOKEN")
             localStorage.setItem("MEMESA_TOKEN", data.data.Data)
             message.success("用户基本信息更改成功！")
-
         }
         else{
             message.error("名字貌似被用了，要不咱换一个？")
@@ -114,11 +113,13 @@ function uploadAvatar(){
     axios({
         headers: {
             "Content-Type": "multipart/form-data",
-            "Authorization": avatarServerToken
+            "Authorization": avatarServerToken,
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': true
         },
         data: QueryString.stringify(targetData),
         method: "post",
-        url: avatarHandler.apiBaseAddress + "/upload"
+        url: avatarHandler.apiBaseAddress + "/upload",
     }).then(data => {
         if (data.data.success != "true"){
             message.error("头像上传失败")
@@ -128,6 +129,32 @@ function uploadAvatar(){
         let userAvatarAddress = data.data.data.url
         // save the url in local and our own server
         localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
+        // upload this link to the server
+        let requestData = {
+            "address": localStorage.getItem("MEMESA_AVATAR")
+        }
+        axios({
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": localStorage.getItem("MEMESA_TOKEN")
+            },
+            method: "post",
+            url: "/avatar/add",
+            data: QueryString.stringify(requestData)
+        }).then(data => {
+            if (data.data.Code != 200){
+                message.warning("头像未成功上传至本地服务器，但是已经可以使用")
+                return
+            }
+            message.success("头像上传成功！")
+            return
+        }).catch(err => {
+            message.error("头像上传失败")
+            return
+        })
+    }).catch(err => {
+        message.error("头像上传失败")
+        return
     })
 }
 
@@ -158,7 +185,7 @@ gatherUserInfo()
     <Upload v-model:file-list="fileList" :before-upload="beforeUpload" list-type="picture">
         <Button type="primary" :disabled="fileList.length >= 1">选择图片</Button>
     </Upload>
-    <Button type="primary" :disabled="fileList.length === 0" :loading="uploadingAvatar" style="margin: 5px;">上传并作为我的新头像</Button>
+    <Button type="primary" :disabled="fileList.length === 0" :loading="uploadingAvatar" style="margin: 5px;" @click="uploadAvatar">上传并作为我的新头像</Button>
     
 </template>
 <style>

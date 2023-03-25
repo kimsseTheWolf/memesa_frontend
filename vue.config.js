@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
+const AvatarApiHandler = require('./src/js/avatarInfo.js')
 module.exports = defineConfig({
   transpileDependencies: true,
   css: {
@@ -23,7 +24,15 @@ module.exports = defineConfig({
         pathRewrite: {
           "^/api": "/api"
         }
+      },
+      "/avatarAPI": {
+        target: AvatarApiHandler.apiBaseAddress,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/avatarAPI": ""
+        }
       }
-    }
-  }
+    },
+    https: false,
+  },
 })
