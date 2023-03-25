@@ -22,14 +22,15 @@ module.exports = defineConfig({
         target: "http://127.0.0.1:8080",
         changeOrigin: true,
         pathRewrite: {
-          "^/api": "/api"
+          "^/api": ""
         }
       },
-      "/avatarAPI": {
-        target: AvatarApiHandler.apiBaseAddress,
+      "/imgAPI": {
+        target: "https://sm.ms/api/v2",
         changeOrigin: true,
+        secure: true,
         pathRewrite: {
-          "^/avatarAPI": ""
+          "^/imgAPI": ""
         }
       }
     },

@@ -26,7 +26,7 @@ function getRegisterResult(){
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             method: "post",
-            url: "/user/register",
+            url: "/api/user/register",
             data: QueryString.stringify(data)
         }).then(info => {
             message.success("注册成功")

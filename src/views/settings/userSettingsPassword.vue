@@ -16,7 +16,7 @@ function gatherUserInfo(){
             "Authorization": userToken
         },
         method: "post",
-        url: "/user/getUserInfo",
+        url: "/api/user/getUserInfo",
     }).then(data => {
         console.log(data)
         email.value = data.data.Data.email

@@ -28,7 +28,7 @@ function getLoginResult(){
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: "post",
-        url: "/user/login",
+        url: "/api/user/login",
         data: QueryString.stringify(data)
     }).then((info) => {
         const token = info.data.Data

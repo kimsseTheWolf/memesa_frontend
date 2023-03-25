@@ -7,9 +7,11 @@
     import { ref } from 'vue';
     import axios from 'axios';
     import { message } from 'ant-design-vue';
+    import AvatarHandler from '@/js/avatar'
 
     const username = ref("")
     const description = ref("")
+    const avatarAddress = ref("")
 
     function gatherUserInfo(){
         // send request to get user information from the db
@@ -21,7 +23,7 @@
                 "Authorization": userToken
             },
             method: "post",
-            url: "/user/getUserInfo",
+            url: "/api/user/getUserInfo",
         }).then(data => {
             console.log(data)
             username.value = data.data.Data.username
@@ -32,7 +34,13 @@
         })
     }
 
+    function getAvatarAddress(){
+        avatarAddress.value = AvatarHandler.getAvatarAddress()
+    }
+
     setTimeout(gatherUserInfo, 500)
+    getAvatarAddress()
+    
 
 </script>
 <template>
@@ -51,8 +59,8 @@
                 <img id="clickable" src="../assets/ico_uploadManage.svg">
             </RouterLink>
             <Popover title="个人中心" style="width: 200px;">
-                <Avatar size="large" id="clickable">
-                    <RouterLink to="/personHomepage" class="normal-link">登录</RouterLink>
+                <Avatar size="large" id="clickable" :src="avatarAddress">
+                    <!-- <RouterLink to="/personHomepage" class="normal-link">登录</RouterLink> -->
                 </Avatar>
                 <template #content>
                     点击进入个人中心！<br>
@@ -67,7 +75,7 @@
                             </RouterLink>
                         </div>
                         <div v-else>
-                            <Avatar size="large"></Avatar><br>
+                            <Avatar size="large" :src="avatarAddress"></Avatar><br>
                             <b>{{ username }}</b>
                             <div style="color:gray;">
                                 {{ description }}

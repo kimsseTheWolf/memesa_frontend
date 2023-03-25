@@ -23,7 +23,7 @@ function gatherUserInfo(){
             "Authorization": userToken
         },
         method: "post",
-        url: "/user/getUserInfo",
+        url: "/api/user/getUserInfo",
     }).then(data => {
         console.log(data)
         username.value = data.data.Data.username
@@ -86,7 +86,7 @@ function verifyUserPassword() {
             "Authorization": localStorage.getItem("MEMESA_TOKEN")
         },
         method: "post",
-        url: "/user/checkPassword",
+        url: "/api/user/checkPassword",
         data: QueryString.stringify(requestData)
     }).then(data => {
         if (data.data.Message == "true"){
@@ -137,7 +137,7 @@ function deleteServerUser(){
             "Authorization": localStorage.getItem("MEMESA_TOKEN")
         },
         method: "post",
-        url: "/user/deleteUser"
+        url: "/api/user/deleteUser"
     }).then(data => {
         if (data.data.Code == 200){
             localStorage.clear()

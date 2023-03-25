@@ -23,6 +23,7 @@ const password = ref("no_password")
 const newUsername = ref("")
 const newDescription = ref("")
 const basicInfoModifyWindowStatus = ref(false)
+const avatarAddress = ref("")
 
 function gatherUserInfo(){
     // send request to get user information from the db
@@ -34,7 +35,7 @@ function gatherUserInfo(){
             "Authorization": userToken
         },
         method: "post",
-        url: "/user/getUserInfo",
+        url: "/api/user/getUserInfo",
     }).then(data => {
         console.log(data)
         username.value = data.data.Data.username
@@ -74,7 +75,7 @@ function modifyUserInfo(){
             "Authorization": userToken
         },
         method: "post",
-        url: "/user/modifyBasicUserInfo",
+        url: "/api/user/modifyBasicUserInfo",
         data: QueryString.stringify(requestData)
     }).then(data => {
         if (data.data.Code == 200){
@@ -102,8 +103,13 @@ function showModifyInfoDialog(){
 function hideModifyInfoDialog(){
     basicInfoModifyWindowStatus.value = false
 }
+
+function getAvatarAddress(){
+    avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+}
 onMounted(()=>console.log("App mounted"))
 gatherUserInfo()
+getAvatarAddress()
 </script>
 <template>
     <h1 class="page-title">我</h1>
@@ -111,7 +117,12 @@ gatherUserInfo()
     <div v-if="isLoggedIn">
         <div class="static-content-block">
             <div id="inline-display">
-                <Avatar :size="60">用户</Avatar>
+                <Avatar :size="60" :src="avatarAddress">
+                    <img :src="avatarAddress" v-if="avatarAddress != ''">
+                    <div v-if="avatarAddress == ''">
+                        登录
+                    </div>
+                </Avatar>
                 <span class="inline-title">
                     <h1 style="width: fit-content;" class="user-title">{{ username }}</h1>
                     <div style="width: fit-content;">{{ description }}</div>

@@ -5,6 +5,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import QueryString from 'qs';
 import avatarHandler from '@/js/avatar'
+import { file } from '@babel/types';
 const newUsername = ref("")
 const newDescription = ref("")
 const username = ref("")
@@ -22,7 +23,7 @@ function gatherUserInfo(){
             "Authorization": userToken
         },
         method: "post",
-        url: "/user/getUserInfo",
+        url: "/api/user/getUserInfo",
     }).then(data => {
         console.log(data)
         username.value = data.data.Data.username
@@ -59,7 +60,7 @@ function modifyUserInfo(){
             "Authorization": userToken
         },
         method: "post",
-        url: "/user/modifyBasicUserInfo",
+        url: "/api/user/modifyBasicUserInfo",
         data: QueryString.stringify(requestData)
     }).then(data => {
         if (data.data.Code == 200){
@@ -102,60 +103,70 @@ function beforeUpload(file) {
     
 }
 
-function uploadAvatar(){
+async function uploadAvatar(){
     // store the file to the external server first
-    let avatarServerToken = avatarHandler.generateAccessToken()
-    // upload
-    let targetData = {
-        "smfile": fileList.value[0],
-        "format": "json"
-    }
-    axios({
-        headers: {
-            "Content-Type": "multipart/form-data",
-            "Authorization": avatarServerToken,
-            'Access-Control-Allow-Credentials': true,
-            'Access-Control-Allow-Origin': true
-        },
-        data: QueryString.stringify(targetData),
-        method: "post",
-        url: avatarHandler.apiBaseAddress + "/upload",
-    }).then(data => {
-        if (data.data.success != "true"){
-            message.error("头像上传失败")
-            return
-        }
-        // gather the url of the image
-        let userAvatarAddress = data.data.data.url
-        // save the url in local and our own server
-        localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
-        // upload this link to the server
-        let requestData = {
-            "address": localStorage.getItem("MEMESA_AVATAR")
-        }
+    let avatarToken = await avatarHandler.generateAccessToken()
+    console.log(avatarToken)
+    // generate smfile and formdata to prepare
+    setTimeout(() => {
+        let formData = new FormData()
+        formData.append("smfile",fileList.value[0])
+        formData.append("format", "json")
+        console.log(fileList.value[0])
+        // upload
+        console.log(localStorage.getItem("AVATAR_TOKEN") + " is the token from the external server")
         axios({
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": localStorage.getItem("MEMESA_TOKEN")
+                "Content-Type": "multipart/form-data",
+                "Authorization": localStorage.getItem("AVATAR_TOKEN"),
             },
             method: "post",
-            url: "/avatar/add",
-            data: QueryString.stringify(requestData)
+            url: "/imgAPI/upload",
+            data: formData,
         }).then(data => {
-            if (data.data.Code != 200){
-                message.warning("头像未成功上传至本地服务器，但是已经可以使用")
+            console.log(localStorage.getItem("AVATAR_TOKEN") + " is the token from the external server")
+            if (data.data.success != true){
+                message.error("头像上传失败")
+                console.log(data.data)
                 return
             }
-            message.success("头像上传成功！")
-            return
+            // gather the url of the image
+            let userAvatarAddress = data.data.data.url
+            // save the url in local and our own server
+            localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
+            console.log("URL has already saved into local but waiting for upload to our own server")
+            // upload this link to the server
+            let requestData = {
+                "address": localStorage.getItem("MEMESA_AVATAR")
+            }
+            axios({
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": localStorage.getItem("MEMESA_TOKEN")
+                },
+                method: "post",
+                url: "/api/avatar/add",
+                data: QueryString.stringify(requestData)
+            }).then(data => {
+                if (data.data.Code != 200){
+                    message.warning("头像未成功上传至本地服务器，但是已经可以使用")
+                    return
+                }
+                message.success("头像上传成功！")
+                return
+            }).catch(err => {
+                message.error("头像上传失败")
+                return
+            })
         }).catch(err => {
             message.error("头像上传失败")
             return
         })
-    }).catch(err => {
-        message.error("头像上传失败")
-        return
-    })
+    }, 500);
+}
+
+function getPicture(e){
+    fileList.value.push(e.target.files[0])
 }
 
 onMounted(()=>gatherUserInfo)
@@ -182,10 +193,12 @@ gatherUserInfo()
     <Divider></Divider>
     <h2>头像设置</h2>
     您可以在这里上传您的头像，头像文件大小不要超过5MB<br>
+    <input type="file" accept="image/*" @change="getPicture($event)">
     <Upload v-model:file-list="fileList" :before-upload="beforeUpload" list-type="picture">
-        <Button type="primary" :disabled="fileList.length >= 1">选择图片</Button>
+        <!-- <Button type="primary" :disabled="fileList.length >= 1">选择图片</Button> -->
     </Upload>
     <Button type="primary" :disabled="fileList.length === 0" :loading="uploadingAvatar" style="margin: 5px;" @click="uploadAvatar">上传并作为我的新头像</Button>
+    
     
 </template>
 <style>
