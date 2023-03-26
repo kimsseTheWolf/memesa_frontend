@@ -4,6 +4,7 @@
     import { Button } from 'ant-design-vue';
     import { Avatar } from 'ant-design-vue';
     import { Popover } from 'ant-design-vue';
+    import { Tooltip } from 'ant-design-vue';
     import { ref } from 'vue';
     import axios from 'axios';
     import { message } from 'ant-design-vue';
@@ -35,8 +36,15 @@
     }
 
     function getAvatarAddress(){
+    console.log(AvatarHandler.getAvatarAddress() == "")
+    if (AvatarHandler.getAvatarAddress() != undefined && AvatarHandler.getAvatarAddress() != ""){
         avatarAddress.value = AvatarHandler.getAvatarAddress()
     }
+    else{
+        AvatarHandler.getUserAvatarAddress()
+        avatarAddress.value = AvatarHandler.getAvatarAddress()
+    }
+}
 
     setTimeout(gatherUserInfo, 500)
     getAvatarAddress()
@@ -55,13 +63,26 @@
         </Button>
         <Input width="600px" id="search-input-box" placeholder="搜索手书，音乐，或者视频"/>
         <div class="right-align-box">
-            <RouterLink to="/workManager" class="right-icons">
-                <img id="clickable" src="../assets/ico_uploadManage.svg">
-            </RouterLink>
+            <Tooltip>
+                <template #title>
+                    动态
+                </template>
+                <RouterLink to="/moment" class="right-icons">
+                    <img src="@/assets/moment.svg" id="clickable" style="width: 32px;">
+                </RouterLink>
+            </Tooltip>
+            <Tooltip>
+                <template #title>
+                    稿件管理
+                </template>
+                <RouterLink to="/workManager" class="right-icons">
+                    <img id="clickable" src="../assets/ico_uploadManage.svg">
+                </RouterLink>
+            </Tooltip>
             <Popover title="个人中心" style="width: 200px;">
-                <Avatar size="large" id="clickable" :src="avatarAddress">
-                    <!-- <RouterLink to="/personHomepage" class="normal-link">登录</RouterLink> -->
-                </Avatar>
+                <RouterLink to="/personHomepage" class="normal-link">
+                    <Avatar size="large" id="clickable" :src="avatarAddress"></Avatar>
+                </RouterLink>
                 <template #content>
                     点击进入个人中心！<br>
                     <div style="text-align: center; margin-top: 10px;">

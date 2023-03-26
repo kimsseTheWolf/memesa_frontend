@@ -44,6 +44,7 @@ export default{
     },
     getUserAvatarAddress: function (username){
         let userToken = localStorage.getItem("MEMESA_TOKEN")
+        let targetAvatar = ""
         axios({
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -52,15 +53,23 @@ export default{
             method: "post",
             url: "/api/avatar/get",
         }).then(data => {
+            console.log("Request finished")
             console.log(data)
             // get the status from the data
             if (data.data.Code == 200){
                 // success
-                return data.data.Data.address
+                console.log(data.data.Data.userAvatar)
+                targetAvatar = data.data.Data.userAvatar
+                localStorage.setItem("MEMESA_AVATAR", data.data.Data.userAvatar)
+                return targetAvatar
             }
             else{
-                return ""
+                targetAvatar = ""
+                return targetAvatar
             }
         })
+        console.log("Address of the avatar is: ")
+        console.log(targetAvatar)
+        return targetAvatar
     },
 }

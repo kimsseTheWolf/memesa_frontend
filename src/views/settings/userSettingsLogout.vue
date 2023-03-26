@@ -155,6 +155,10 @@ function deleteServerUser(){
     })
 }
 
+function refreshPage(){
+    location.reload()
+}
+
 </script>
 <template>
     <VerifyPassword username="unknown" :showDialog="false"/>
@@ -172,10 +176,10 @@ function deleteServerUser(){
         您已登出成功，是否立即重新登录？
         <template #footer>
             <RouterLink to="/login">
-                <Button type="primary">登录</Button>
+                <Button type="primary" @click="refreshPage">登录</Button>
             </RouterLink>
             <RouterLink to="/register">
-                <Button type="default">注册</Button>
+                <Button type="default" @click="refreshPage">注册</Button>
             </RouterLink>
             
         </template>

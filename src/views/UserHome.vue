@@ -5,6 +5,7 @@ import { Avatar, Button, message, Modal, Input, Textarea } from 'ant-design-vue'
 import axios from 'axios';
 import QueryString from 'qs';
 import inlineContentBox from '@/components/inlineContentBox.vue';
+import AvatarHandler from '@/js/avatar'
 
 const isLoggedIn = computed(()=>{
     if (localStorage.getItem("MEMESA_TOKEN") == null){
@@ -105,7 +106,14 @@ function hideModifyInfoDialog(){
 }
 
 function getAvatarAddress(){
-    avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+    console.log(AvatarHandler.getAvatarAddress() == "")
+    if (AvatarHandler.getAvatarAddress() != undefined && AvatarHandler.getAvatarAddress() != ""){
+        avatarAddress.value = AvatarHandler.getAvatarAddress()
+    }
+    else{
+        AvatarHandler.getUserAvatarAddress()
+        avatarAddress.value = AvatarHandler.getAvatarAddress()
+    }
 }
 onMounted(()=>console.log("App mounted"))
 gatherUserInfo()

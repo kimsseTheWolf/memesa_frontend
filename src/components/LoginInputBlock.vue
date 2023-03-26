@@ -3,6 +3,7 @@ import { Input, InputPassword, Button, message, Checkbox, Modal } from 'ant-desi
 import { ref } from 'vue';
 import axios from 'axios';
 import QueryString from 'qs';
+import avatar from '@/js/avatar';
 
 const username = ref("")
 const password = ref("")
@@ -31,8 +32,12 @@ function getLoginResult(){
         url: "/api/user/login",
         data: QueryString.stringify(data)
     }).then((info) => {
-        const token = info.data.Data
+        console.log(info)
+        const token = info.data.Data.token
         localStorage.setItem("MEMESA_TOKEN", token)
+        // send a request to get the user avatar
+        let avatarAddress = avatar.getUserAvatarAddress(username.value)
+        localStorage.setItem("MEMESA_AVATAR", avatarAddress)
         message.success("登录成功")
         showSuccessDialog()
     }).catch((err) => {

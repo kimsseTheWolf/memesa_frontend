@@ -1,6 +1,6 @@
 <script setup>
 
-import { Button, Input, Textarea, message, Divider, Upload } from 'ant-design-vue';
+import { Button, Input, Textarea, message, Divider, Upload, Avatar } from 'ant-design-vue';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import QueryString from 'qs';
@@ -12,6 +12,8 @@ const username = ref("")
 const description = ref("")
 const fileList = ref([])
 const uploadingAvatar = ref(false)
+const avatarAddress = ref("")
+const avatarProcessing = ref(false)
 
 function gatherUserInfo(){
     // send request to get user information from the db
@@ -104,6 +106,7 @@ function beforeUpload(file) {
 }
 
 async function uploadAvatar(){
+    avatarProcessing.value = true
     // store the file to the external server first
     let avatarToken = await avatarHandler.generateAccessToken()
     console.log(avatarToken)
@@ -125,16 +128,23 @@ async function uploadAvatar(){
             data: formData,
         }).then(data => {
             console.log(localStorage.getItem("AVATAR_TOKEN") + " is the token from the external server")
-            if (data.data.success != true){
+            if (data.data.success != true && data.data.code != 'image_repeated'){
                 message.error("头像上传失败")
                 console.log(data.data)
+                avatarProcessing.value = false
                 return
             }
             // gather the url of the image
-            let userAvatarAddress = data.data.data.url
-            // save the url in local and our own server
-            localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
-            console.log("URL has already saved into local but waiting for upload to our own server")
+            if (data.data.code == 'image_repeated'){
+                localStorage.setItem("MEMESA_AVATAR", data.data.images)
+                console.log("URL has already saved into local but waiting for upload to our own server")
+            }
+            else {
+                let userAvatarAddress = data.data.data.url
+                // save the url in local and our own server
+                localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
+                console.log("URL has already saved into local but waiting for upload to our own server")
+            }
             // upload this link to the server
             let requestData = {
                 "address": localStorage.getItem("MEMESA_AVATAR")
@@ -150,16 +160,20 @@ async function uploadAvatar(){
             }).then(data => {
                 if (data.data.Code != 200){
                     message.warning("头像未成功上传至本地服务器，但是已经可以使用")
+                    avatarProcessing.value = false
                     return
                 }
                 message.success("头像上传成功！")
+                avatarProcessing.value = false
                 return
             }).catch(err => {
                 message.error("头像上传失败")
+                avatarProcessing.value = false
                 return
             })
         }).catch(err => {
             message.error("头像上传失败")
+            avatarProcessing.value = false
             return
         })
     }, 500);
@@ -169,8 +183,20 @@ function getPicture(e){
     fileList.value.push(e.target.files[0])
 }
 
+function getAvatarAddress(){
+    console.log(avatarHandler.getAvatarAddress() == "")
+    if (avatarHandler.getAvatarAddress() != undefined && avatarHandler.getAvatarAddress() != ""){
+        avatarAddress.value = avatarHandler.getAvatarAddress()
+    }
+    else{
+        avatarHandler.getUserAvatarAddress()
+        avatarAddress.value = avatarHandler.getAvatarAddress()
+    }
+}
+
 onMounted(()=>gatherUserInfo)
 gatherUserInfo()
+getAvatarAddress()
 
 </script>
 <template>
@@ -192,12 +218,13 @@ gatherUserInfo()
 
     <Divider></Divider>
     <h2>头像设置</h2>
-    您可以在这里上传您的头像，头像文件大小不要超过5MB<br>
+    <Avatar :src="avatarAddress" :size="72"></Avatar><br>
+    您可以在这里上传您的头像，头像文件大小不要超过2MB<br>
     <input type="file" accept="image/*" @change="getPicture($event)">
     <Upload v-model:file-list="fileList" :before-upload="beforeUpload" list-type="picture">
         <!-- <Button type="primary" :disabled="fileList.length >= 1">选择图片</Button> -->
     </Upload>
-    <Button type="primary" :disabled="fileList.length === 0" :loading="uploadingAvatar" style="margin: 5px;" @click="uploadAvatar">上传并作为我的新头像</Button>
+    <Button type="primary" :disabled="fileList.length === 0" :loading="avatarProcessing" style="margin: 5px;" @click="uploadAvatar">上传并作为我的新头像</Button>
     
     
 </template>

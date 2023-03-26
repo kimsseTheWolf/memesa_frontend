@@ -1,5 +1,16 @@
 <script setup>
 import RegisterInputBlock from '@/components/RegisterInputBlock.vue';
+
+let alreadyRefreshed = false
+
+function refreshPage(){
+    if (!alreadyRefreshed){
+        location.refreshPage()
+        alreadyRefreshed = true
+    }
+}
+
+refreshPage()
 </script>
 <template>
 

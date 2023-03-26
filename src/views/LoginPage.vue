@@ -2,6 +2,16 @@
 import LoginInputBlock from '@/components/LoginInputBlock.vue';
 
 // import { outlinedUser } from '@ant-design/icons-vue'
+// let alreadyRefreshed = false
+
+// function refreshPage(){
+//     if (!alreadyRefreshed){
+//         location.refreshPage()
+//         alreadyRefreshed = true
+//     }
+// }
+
+// refreshPage()
 </script>
 <template>
 
