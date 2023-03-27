@@ -22,6 +22,7 @@
         <img v-if="icon == 'contact'" src="@/assets/email.svg" :width="22">
         <img v-if="icon == 'settings'" src="@/assets/settings.png" :width="22">
         <img v-if="icon == 'user'" src="@/assets/user.svg" :width="22">
+        <img v-if="icon == 'workManager'" src="@/assets/icon_uploadManageInverse.svg" :width="22">
         <br>
         {{ content }}
     </div>

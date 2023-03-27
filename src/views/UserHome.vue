@@ -162,21 +162,34 @@ getAvatarAddress()
             
         </div>
         <div class="static-content-block">
-            <h2>我的稿件</h2>
-            你近期的作品会在这里展示，更多历史作品请前往稿件中心<br>
-            <RouterLink to="/workManager">
-                <Button type="primary">前往稿件中心</Button>
-            </RouterLink>
+            <h2>播放历史</h2>
+            播放过的视频将会出现在这里<br>
+            <div>
+                这里空空如也~
+            </div>
+            <Button type="primary" style="margin: 5px;">查看更多历史</Button>
+        </div>
+        <div class="static-content-block">
+            <h2>收藏</h2>
+            喜欢的视频或者音频可以放在收藏夹里哦
+            <div>
+                这里空空如也，要不咱先创建一个收藏夹？
+            </div>
+            <Button type="primary" style="margin: 5px;">查看所有收藏</Button>
+            <Button style="margin: 5px;">创建新的收藏夹</Button>
         </div>
         <div class="static-content-block">
             <h2>我的动态</h2>
             最近的动态将会展示在这里，更多历史动态请前往动态页面<br>
             <RouterLink to="/moment">
-                <Button type="primary">前往动态</Button>
+                <Button type="primary" style="margin: 5px;">前往动态</Button>
             </RouterLink>
         </div>
         <div class="static-content-block">
             <h2>更多功能</h2>
+            <RouterLink to="/workManager">
+                <inlineContentBox content="创作者中心" icon="workManager"/>
+            </RouterLink>
             <RouterLink to="/settings">
                 <inlineContentBox content="设置" icon="settings"/>
             </RouterLink>

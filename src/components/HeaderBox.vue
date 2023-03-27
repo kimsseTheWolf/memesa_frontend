@@ -65,6 +65,12 @@
         <div class="right-align-box">
             <Tooltip>
                 <template #title>
+                    历史记录
+                </template>
+                <img src="@/assets/history.svg" id="clickable" style="margin-right: 5px;">
+            </Tooltip>
+            <Tooltip>
+                <template #title>
                     动态
                 </template>
                 <RouterLink to="/moment" class="right-icons">
