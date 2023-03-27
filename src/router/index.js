@@ -4,6 +4,11 @@ import HomeView from '../views/HomePage.vue'
 
 const routes = [
   {
+    path: '/beta',
+    name: "Beta testing page",
+    component: ()=>import('@/views/Test/TestHome.vue')
+  },
+  {
     path: '/',
     name: 'home',
     component: HomeView,

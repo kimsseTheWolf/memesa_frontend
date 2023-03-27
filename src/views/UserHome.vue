@@ -199,6 +199,9 @@ getAvatarAddress()
             <RouterLink to="/faq">
                 <inlineContentBox content="答疑中心" icon="contact"/>
             </RouterLink>
+            <RouterLink to="/beta">
+                <inlineContentBox content="测试" icon="contact"/>
+            </RouterLink>
         </div>
         
     </div>
