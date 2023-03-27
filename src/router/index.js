@@ -61,6 +61,11 @@ const routes = [
     path: '/moment',
     name: 'User Moments',
     component: ()=>import('@/views/MomentsPage.vue')
+  },
+  {
+    path: '/user/:id',
+    name: 'Views for person is viewing others homepage',
+    component: ()=>import('@/views/UserHomePreview.vue')
   }
   
 ]
