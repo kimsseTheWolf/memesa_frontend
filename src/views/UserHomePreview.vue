@@ -1,5 +1,6 @@
 <script setup>
 import user from '@/js/user';
+import avatar from '@/js/avatar';
 import { Avatar, Button } from 'ant-design-vue';
 import { ref, computed, created } from 'vue'
 import { useRoute } from 'vue-router';
@@ -8,6 +9,7 @@ import { useRoute } from 'vue-router';
 const targetUsername = ref("")
 const targetDescription = ref("")
 const targetID = ref("")
+const targetAvatarAddr = ref("")
 const route = useRoute()
 const inputID = computed(()=>{
     return route.params.id
@@ -22,22 +24,33 @@ function getTargetUserInfo(){
     targetUsername.value = UserInfo.username
     targetDescription.value = UserInfo.description
     targetID.value = UserInfo.id
+    localStorage.removeItem("TEMP_USERINFO")
 }
 
 function userInfoTrigger(){
     user.getUserBasicInfo(inputID.value)
     setTimeout(() => {
         getTargetUserInfo()
-    }, 500);
+    }, 200);
+}
+
+function getTargetUserAvatar(){
+    avatar.getUserAvatarAddress(false)
+    setTimeout(() => {
+        targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
+        console.log(targetAvatarAddr.value)
+        localStorage.removeItem("TEMP_USERAVATAR")
+    }, 200)
 }
 
 console.log(inputID.value)
 userInfoTrigger()
+getTargetUserAvatar()
 </script>
 <template>
     <div class="static-content-block">
         <div id="inline-display">
-            <Avatar :size="60">
+            <Avatar :size="60" :src="targetAvatarAddr">
                 头像
             </Avatar>
             <span class="inline-title">

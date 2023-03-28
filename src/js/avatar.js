@@ -42,7 +42,7 @@ export default{
         console.log(targetToken)
         return targetToken
     },
-    getUserAvatarAddress: function (username){
+    getUserAvatarAddress: function (isForSelf){
         let userToken = localStorage.getItem("MEMESA_TOKEN")
         let targetAvatar = ""
         axios({
@@ -60,7 +60,13 @@ export default{
                 // success
                 console.log(data.data.Data.userAvatar)
                 targetAvatar = data.data.Data.userAvatar
-                localStorage.setItem("MEMESA_AVATAR", data.data.Data.userAvatar)
+                if (isForSelf){
+                    localStorage.setItem("MEMESA_AVATAR", data.data.Data.userAvatar)
+                }
+                else{
+                    localStorage.setItem("TEMP_USERAVATAR", data.data.Data.userAvatar)
+                }
+                
                 return targetAvatar
             }
             else{

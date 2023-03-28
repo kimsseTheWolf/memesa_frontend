@@ -189,7 +189,7 @@ function getAvatarAddress(){
         avatarAddress.value = avatarHandler.getAvatarAddress()
     }
     else{
-        avatarHandler.getUserAvatarAddress()
+        avatarHandler.getUserAvatarAddress(true)
         avatarAddress.value = avatarHandler.getAvatarAddress()
     }
 }
