@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomePage.vue'
+import UserHomePreviewVue from '@/views/UserHomePreview.vue'
 // import UserHomeVue from '../views/UserHome.vue'
 
 const routes = [
@@ -70,7 +71,7 @@ const routes = [
   {
     path: '/user/:id',
     name: 'Views for person is viewing others homepage',
-    component: ()=>import('@/views/UserHomePreview.vue')
+    component: UserHomePreviewVue
   }
   
 ]

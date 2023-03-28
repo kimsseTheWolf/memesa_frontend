@@ -9,6 +9,7 @@ export default{
     getUserBasicInfo: function (id) {
         let userToken = localStorage.getItem("MEMESA_TOKEN")
         let returnData = this.returnData
+        console.log(id)
         axios({
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -18,7 +19,7 @@ export default{
             url: '/api/user/getUserBasicInfo/' + id,
         }).then(data => {
             // transport the data to the inpage functions
-            localStorage.setItem("TEMP_USERINFO", qs.stringify(data.data.Data))
+            localStorage.setItem("TEMP_USERINFO", JSON.stringify(data.data.Data))
         }).catch(err =>{
             console.log("Error appears: ")
             console.log(err)
