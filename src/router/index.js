@@ -38,7 +38,7 @@ const routes = [
   {
     path: '/settings',
     name: 'Settings Page',
-    component: ()=>import('@/views/settingsPage.vue'),
+    component: ()=>import('@/views/SettingsPage.vue'),
     children: [
       {
         path: 'user/basicInfo',
@@ -61,7 +61,7 @@ const routes = [
   {
     path: '/faq',
     name: ' Q&A Section',
-    component: ()=>import('@/views/QAndA.vue')
+    component: ()=>import('@/views/QA.vue')
   },
   {
     path: '/moment',
@@ -72,8 +72,12 @@ const routes = [
     path: '/user/:id',
     name: 'Views for person is viewing others homepage',
     component: UserHomePreviewVue
+  },
+  {
+    path: '/user/full',
+    name: 'Full list of users on the site, admin only',
+    component: ()=>import('@/views/Test/FullUserList.vue')
   }
-  
 ]
 
 const router = createRouter({

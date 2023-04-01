@@ -1,7 +1,8 @@
 <script setup>
 import user from '@/js/user';
 import avatar from '@/js/avatar';
-import { Avatar, Button } from 'ant-design-vue';
+import subscriptions from '@/js/subscriptions';
+import { Avatar, Button, message, Tooltip } from 'ant-design-vue';
 import { ref, computed, created } from 'vue'
 import { useRoute } from 'vue-router';
 // import router from 'vue-router'
@@ -10,6 +11,7 @@ const targetUsername = ref("")
 const targetDescription = ref("")
 const targetID = ref("")
 const targetAvatarAddr = ref("")
+const isSubscripted = ref(false)
 const route = useRoute()
 const inputID = computed(()=>{
     return route.params.id
@@ -27,14 +29,14 @@ function getTargetUserInfo(){
     localStorage.removeItem("TEMP_USERINFO")
 }
 
-function userInfoTrigger(){
-    user.getUserBasicInfo(inputID.value)
+async function userInfoTrigger(){
+    let sth = await user.getUserBasicInfo(inputID.value)
     setTimeout(() => {
         getTargetUserInfo()
     }, 200);
 }
 
-function getTargetUserAvatar(){
+async function getTargetUserAvatar(){
     avatar.getUserAvatarAddress(false)
     setTimeout(() => {
         targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
@@ -43,9 +45,36 @@ function getTargetUserAvatar(){
     }, 200)
 }
 
+async function getUserSupscriptionInfo(){
+    let resultInfo = await subscriptions.getSubscriptionRelation(inputID.value)
+    console.log("data from the vue file")
+    console.log(resultInfo)
+    if (resultInfo.status == false){
+        // message.warning("暂时无法获取你们的关注信息")
+        isSubscripted.value = false
+        return
+    }
+    // check whether is following
+    if (resultInfo.data.isFollowing != 1){
+        isSubscripted.value = false
+        return
+    }
+    isSubscripted.value = true
+    return
+}
+
+async function subscribeUser(){
+    let result = await subscriptions.addSubscription(inputID.value)
+    getUserSupscriptionInfo()
+}
+
 console.log(inputID.value)
 userInfoTrigger()
 getTargetUserAvatar()
+setTimeout(() => {
+    getUserSupscriptionInfo()
+}, 500);
+
 </script>
 <template>
     <div class="static-content-block">
@@ -57,7 +86,14 @@ getTargetUserAvatar()
                 <h1 style="width: fit-content;" class="user-title"><b>{{targetUsername}}</b></h1>
                 <div style="width: fit-content;">{{targetDescription}}</div>
             </span>
-            <Button type="primary" @click="showModifyInfoDialog">关注</Button>
+            <Button type="primary" @click="subscribeUser" v-if="!isSubscripted">关注</Button>
+            <Tooltip>
+                <Button v-if="isSubscripted">已关注</Button>
+                <template #title>
+                    点击取消关注
+                </template>
+            </Tooltip>
+            
         </div>
         <div>
             <b>关注数：</b> | 

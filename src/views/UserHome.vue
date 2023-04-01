@@ -4,7 +4,7 @@ import { computed, ref, onMounted } from 'vue';
 import { Avatar, Button, message, Modal, Input, Textarea } from 'ant-design-vue';
 import axios from 'axios';
 import QueryString from 'qs';
-import inlineContentBox from '@/components/inlineContentBox.vue';
+import inlineContentBox from '@/components/InlineContentBox.vue';
 import AvatarHandler from '@/js/avatar'
 
 const isLoggedIn = computed(()=>{
