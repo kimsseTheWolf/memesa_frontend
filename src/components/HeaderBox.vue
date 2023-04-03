@@ -67,7 +67,9 @@
                 <template #title>
                     历史记录
                 </template>
-                <img src="@/assets/history.svg" id="clickable" style="margin-right: 5px;">
+                <RouterLink to="/history">
+                    <img src="@/assets/history.svg" id="clickable" style="margin-right: 5px;">
+                </RouterLink>
             </Tooltip>
             <Tooltip>
                 <template #title>

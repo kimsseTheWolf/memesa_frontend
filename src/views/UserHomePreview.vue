@@ -13,12 +13,13 @@ const targetID = ref("")
 const targetAvatarAddr = ref("")
 const isSubscripted = ref(false)
 const route = useRoute()
+const followingNumber = ref(0)
 const inputID = computed(()=>{
     return route.params.id
 })
 
 
-function getTargetUserInfo(){
+async function getTargetUserInfo(){
     // directly get the user info from the local source
     let UserInfoStr = localStorage.getItem("TEMP_USERINFO")
     let UserInfo = JSON.parse(UserInfoStr)
@@ -27,6 +28,10 @@ function getTargetUserInfo(){
     targetDescription.value = UserInfo.description
     targetID.value = UserInfo.id
     localStorage.removeItem("TEMP_USERINFO")
+    // get user following list
+    let followingList = await subscriptions.getUserFollowingList(inputID.value)
+    followingNumber.value = followingList.length
+    console.log("Follower list gathered and changed")
 }
 
 async function userInfoTrigger(){
@@ -68,6 +73,11 @@ async function subscribeUser(){
     getUserSupscriptionInfo()
 }
 
+async function cancleSubscribeUser(){
+    let result = await subscriptions.removeSubscription(inputID.value)
+    getUserSupscriptionInfo()
+}
+
 console.log(inputID.value)
 userInfoTrigger()
 getTargetUserAvatar()
@@ -85,10 +95,14 @@ setTimeout(() => {
             <span class="inline-title">
                 <h1 style="width: fit-content;" class="user-title"><b>{{targetUsername}}</b></h1>
                 <div style="width: fit-content;">{{targetDescription}}</div>
+                <div style="width: fit-content; color: gray; font-size: small;">
+                    <img src="@/assets/uid.svg">
+                    {{ targetID }}
+                </div>
             </span>
             <Button type="primary" @click="subscribeUser" v-if="!isSubscripted">关注</Button>
             <Tooltip>
-                <Button v-if="isSubscripted">已关注</Button>
+                <Button v-if="isSubscripted" @click="cancleSubscribeUser">已关注</Button>
                 <template #title>
                     点击取消关注
                 </template>
@@ -96,9 +110,15 @@ setTimeout(() => {
             
         </div>
         <div>
-            <b>关注数：</b> | 
-            <b>粉丝数：</b> | 
-            <b>稿件数：</b> | 
+            <div style="display: inline-block; margin-right: 7px;">
+                <img src="@/assets/subscribe.svg"><b>关注数 </b> {{ followingNumber }}
+            </div>
+            <div style="display: inline-block; margin-right: 7px;">
+                <img src="@/assets/fens.svg"><b>粉丝数 </b> {{ followingNumber }}
+            </div>
+            <div style="display: inline-block; margin-right: 7px;">
+                <img src="@/assets/video.svg"><b>稿件数 </b> {{ followingNumber }}
+            </div>
         </div>
     </div>
     <h2><b>TA的作品</b></h2>

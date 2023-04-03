@@ -134,30 +134,26 @@ getAvatarAddress()
                 <span class="inline-title">
                     <h1 style="width: fit-content;" class="user-title">{{ username }}</h1>
                     <div style="width: fit-content;">{{ description }}</div>
+                    <div style="width: fit-content; color: gray; font-size: small;">
+                        <img src="@/assets/uid.svg">
+                        {{ userid }}
+                    </div>
                 </span>
-                <Button type="primary" @click="showModifyInfoDialog">修改我的个人资料</Button>
-                <Modal title="修改您的基本个人信息" v-model:visible="basicInfoModifyWindowStatus" @cancel="hideModifyInfoDialog()">
-                    您可以在这里修改您的个人昵称与简介。如果您需要修改邮箱或者密码，请移步至设置。<br>
-                    若您不想更改某个信息，留空即可。<br>
-                    <b>新的用户名</b>
-                    <Input placeholder="新的用户名" class="inline-button" v-model:value="newUsername">
-                        <template #prefix>
-                            <img src="@/assets/user.svg">
-                        </template>
-                    </Input>
-                    <b>新的简介（200字以内）</b>
-                    <Textarea placeholder="新的简介（200字以内）" class="inline-button" v-model:value="newDescription">
-                    </Textarea>
-                    <Button type="primary">前往修改我的邮箱或者密码</Button>
-                    <template #footer>
-                        <Button type="primary" @click="modifyUserInfo">修改</Button>
-                    </template>
-                </Modal>
+                <RouterLink to="/settings">
+                    <Button type="primary">修改我的个人资料</Button>
+                </RouterLink>
+                
             </div>
             <div>
-                <b>关注数：</b> | 
-                <b>粉丝数：</b> |
-                <b>稿件数：</b> |
+                <div style="display: inline-block; margin-right: 7px;">
+                    <img src="@/assets/subscribe.svg"><b>关注数 </b> {{ followingNumber }}
+                </div>
+                <div style="display: inline-block; margin-right: 7px;">
+                    <img src="@/assets/fens.svg"><b>粉丝数 </b> {{ followingNumber }}
+                </div>
+                <div style="display: inline-block; margin-right: 7px;">
+                    <img src="@/assets/video.svg"><b>稿件数 </b> {{ followingNumber }}
+                </div>
             </div>
             
         </div>
@@ -167,7 +163,9 @@ getAvatarAddress()
             <div>
                 这里空空如也~
             </div>
-            <Button type="primary" style="margin: 5px;">查看更多历史</Button>
+            <RouterLink to="/history">
+                <Button type="primary" style="margin: 5px;">查看更多历史</Button>
+            </RouterLink>
         </div>
         <div class="static-content-block">
             <h2>收藏</h2>

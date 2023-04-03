@@ -77,6 +77,11 @@ const routes = [
     path: '/user/full',
     name: 'Full list of users on the site, admin only',
     component: ()=>import('@/views/Test/FullUserList.vue')
+  },
+  {
+    path: "/history",
+    name: "history",
+    component: ()=>import('@/views/HistoryPage.vue')
   }
 ]
 
