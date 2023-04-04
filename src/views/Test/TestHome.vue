@@ -1,7 +1,13 @@
 <script setup>
 import { ref } from 'vue';
 import { Button } from 'ant-design-vue'
+import user from '@/js/user';
 const userID = ref("31")
+const userData = ref({})
+
+async function getUserData(){
+    userData.value = await user.getUserBasicInfo(31)
+}
 </script>
 <template>
     <h1>实验性功能测试</h1>
@@ -21,5 +27,12 @@ const userID = ref("31")
                 打开用户列表
             </Button>
         </RouterLink>
+    </div>
+    <div class="static-content-block">
+        <h2>用户信息获取</h2>
+        <Button type="primary" @click="getUserData">
+            获取
+        </Button>
+        {{ userData }}
     </div>
 </template>

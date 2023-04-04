@@ -2,10 +2,9 @@
 import LoginRequireBox from '@/components/LoginRequireBox.vue'
 import { computed, ref, onMounted } from 'vue';
 import { Avatar, Button, message, Modal, Input, Textarea } from 'ant-design-vue';
-import axios from 'axios';
-import QueryString from 'qs';
 import inlineContentBox from '@/components/InlineContentBox.vue';
 import AvatarHandler from '@/js/avatar'
+import user from '@/js/user';
 
 const isLoggedIn = computed(()=>{
     if (localStorage.getItem("MEMESA_TOKEN") == null){
@@ -21,100 +20,36 @@ const email = ref("未知邮箱")
 const userid = ref("未知UID")
 const description = ref("这个人很懒，什么也没写……")
 const password = ref("no_password")
-const newUsername = ref("")
-const newDescription = ref("")
-const basicInfoModifyWindowStatus = ref(false)
 const avatarAddress = ref("")
 
-function gatherUserInfo(){
-    // send request to get user information from the db
-    let userToken = localStorage.getItem("MEMESA_TOKEN")
-    console.log(userToken)
-    axios({
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": userToken
-        },
-        method: "post",
-        url: "/api/user/getUserInfo",
-    }).then(data => {
-        console.log(data)
-        username.value = data.data.Data.username
-        password.value = data.data.Data.password
-        email.value = data.data.Data.email
-        userid.value = data.data.Data.id
-        description.value = data.data.Data.description
-    }).catch(err => {
-        console.log(err)
-        message.error("啊哦！我们在获取你的账号信息时出现了一些问题QAQ")
-    })
-}
-
-function modifyUserInfo(){
-    let userToken = localStorage.getItem("MEMESA_TOKEN")
-    // check input
-    if (newUsername.value == ""){
-        newUsername.value = username.value
-    }
-    if (newDescription.value == ""){
-        newDescription.value = description.value
-    }
-    if (newDescription.value.length > 200){
-        message.warning("简介太长啦！")
+async function gatherUserInfo(){
+    let userData = await user.getUserInfo(localStorage.getItem("MEMESA_TOKEN"))
+    if (userData == null){
+        message.error("哦不！我们暂时无法获取你的个人信息")
         return
     }
-    // generate requesyt body
-    let requestData = {
-        "username": newUsername.value,
-        "description": newDescription.value,
-    }
-    console.log(requestData)
-    // send request
-    axios({
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": userToken
-        },
-        method: "post",
-        url: "/api/user/modifyBasicUserInfo",
-        data: QueryString.stringify(requestData)
-    }).then(data => {
-        if (data.data.Code == 200){
-            // get and reapply the new token from the respond
-            localStorage.removeItem("MEMESA_TOKEN")
-            localStorage.setItem("MEMESA_TOKEN", data.data.Data)
-            message.success("用户基本信息更改成功！")
-            hideModifyInfoDialog()
+    // setup the user data
+    username.value = userData.username
+    password.value = userData.password
+    email.value = userData.email
+    userid.value = userData.id
+    description.value = userData.description
+}
+
+async function getAvatarAddress(){
+        if (localStorage.getItem("MEMESA_AVATAR") != undefined){
+            avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+            return
         }
         else{
-            message.error("名字貌似被用了，要不咱换一个？")
+            let result = await AvatarHandler.getUserAvatarAddress(true)
+            if (!result){
+                return
+            }
+            avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+            return
         }
-        
-    }).catch(err => {
-        console.log(err)
-        message.error("名字貌似被用了，要不咱换一个？")
-    })
-}
-
-
-function showModifyInfoDialog(){
-    basicInfoModifyWindowStatus.value = true
-}
-
-function hideModifyInfoDialog(){
-    basicInfoModifyWindowStatus.value = false
-}
-
-function getAvatarAddress(){
-    console.log(AvatarHandler.getAvatarAddress() == "")
-    if (AvatarHandler.getAvatarAddress() != undefined && AvatarHandler.getAvatarAddress() != ""){
-        avatarAddress.value = AvatarHandler.getAvatarAddress()
     }
-    else{
-        AvatarHandler.getUserAvatarAddress(true)
-        avatarAddress.value = AvatarHandler.getAvatarAddress()
-    }
-}
 onMounted(()=>console.log("App mounted"))
 gatherUserInfo()
 getAvatarAddress()

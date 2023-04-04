@@ -1,57 +1,114 @@
 import axios from "axios"
 import QueryString from 'qs'
 
-export default{
-    externalServerAddress: "",
-    username: "kimsseTheWolf",
-    password: "Jinbohan@070401",
-    apiBaseAddress: "https://sm.ms/api/v2",
-    getAvatarAddress: function(){
-        return localStorage.getItem("MEMESA_AVATAR")
-    },
-    generateAccessToken: function (){
-        let requireData = {
-            "username": this.username,
-            "password": this.password
-        }
-        let targetToken = ""
-        // send request
+let username = "kimsseTheWolf"
+let password = "Jinbohan@070401"
+
+function generateAccessToken(){
+    return new Promise((res, rej) => {
+        let targetToken
         axios({
             method: "post",
-            url: "/imgAPI/token?username="+this.username+"&password="+this.password,
+            url: "/imgAPI/token?username="+username+"&password="+password,
         }).then(data => {
             // get status
             if (data.data.success != true){
                 targetToken = "false"
                 console.log(data)
                 console.log("Request success but error occured while API processing")
-                // return targetToken
+                res(null)
             }
             else {
                 targetToken = data.data.data.token
                 console.log(targetToken)
                 console.log("API Token gathered successfully")
-                localStorage.setItem("AVATAR_TOKEN", targetToken)
-                // return targetToken
+                res(targetToken)
             }
         }).catch (err => {
             console.log(err)
             targetToken = "false"
-            // return targetToken
+            res(null)
         })
-        console.log(targetToken)
-        return targetToken
-    },
-    getUserAvatarAddress: function (isForSelf){
+    })
+}
+
+async function uploadAvatar(targetAvatar){
+    let avatarToken = await generateAccessToken()
+    return new Promise((res, rej) => {
+        // Generate new request data
+        let formData = new FormData()
+        formData.append("smfile", targetAvatar)
+        formData.append("format", "json")
+        // send the request
+        axios({
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": avatarToken,
+            },
+            method: "post",
+            url: "/imgAPI/upload",
+            data: formData,
+        }).then(data => {
+            if (data.data.success != true && data.data.code != 'image_repeated'){
+                console.log(data.data)
+                res(false)
+            }
+            // gather the url of the image
+            if (data.data.code == 'image_repeated'){
+                localStorage.setItem("MEMESA_AVATAR", data.data.images)
+            }
+            else {
+                let userAvatarAddress = data.data.data.url
+                // save the url in local and our own server
+                localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
+            }
+            // upload this link to the server
+            let requestData = {
+                "address": localStorage.getItem("MEMESA_AVATAR")
+            }
+            axios({
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": localStorage.getItem("MEMESA_TOKEN")
+                },
+                method: "post",
+                url: "/api/avatar/add",
+                data: QueryString.stringify(requestData)
+            }).then(data => {
+                if (data.data.Code != 200){
+                    res(false)
+                }
+                res(true)
+            }).catch(err => {
+                res(false)
+            })
+        }).catch(err => {
+            res(false)
+        })
+    })
+}
+
+function getUserAvatarAddress(isForSelf, id=0){
+    return new Promise((res, rej) => {
         let userToken = localStorage.getItem("MEMESA_TOKEN")
         let targetAvatar = ""
+        let targetUrl = ""
+        if (isForSelf){
+            targetUrl = "/api/avatar/get"
+        }
+        else{
+            targetUrl = "/api/avatar/getAny"
+        }
         axios({
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": userToken
             },
             method: "post",
-            url: "/api/avatar/get",
+            url: targetUrl,
+            data: QueryString.stringify({
+                "userId": id
+            })
         }).then(data => {
             console.log("Request finished")
             console.log(data)
@@ -67,15 +124,18 @@ export default{
                     localStorage.setItem("TEMP_USERAVATAR", data.data.Data.userAvatar)
                 }
                 
-                return targetAvatar
+                res(true)
             }
             else{
                 targetAvatar = ""
-                return targetAvatar
+                res(false)
             }
         })
-        console.log("Address of the avatar is: ")
-        console.log(targetAvatar)
-        return targetAvatar
-    },
+    })
+}
+
+export default{
+    generateAccessToken,
+    getUserAvatarAddress,
+    uploadAvatar,
 }

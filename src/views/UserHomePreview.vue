@@ -42,12 +42,18 @@ async function userInfoTrigger(){
 }
 
 async function getTargetUserAvatar(){
-    avatar.getUserAvatarAddress(false)
-    setTimeout(() => {
+    if (localStorage.getItem("TEMP_USERAVATAR") != undefined){
         targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
-        console.log(targetAvatarAddr.value)
-        localStorage.removeItem("TEMP_USERAVATAR")
-    }, 200)
+        return
+    }
+    else{
+        let result = await avatar.getUserAvatarAddress(false, inputID.value)
+        if (!result){
+            return
+        }
+        avatar.value = localStorage.getItem("TEMP_USERAVATAR")
+        targetAvatarAddr
+    }
 }
 
 async function getUserSupscriptionInfo(){

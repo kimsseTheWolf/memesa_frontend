@@ -9,42 +9,32 @@
     import axios from 'axios';
     import { message } from 'ant-design-vue';
     import AvatarHandler from '@/js/avatar'
+    import user from '@/js/user';
 
     const username = ref("")
     const description = ref("")
     const avatarAddress = ref("")
 
-    function gatherUserInfo(){
-        // send request to get user information from the db
-        let userToken = localStorage.getItem("MEMESA_TOKEN")
-        console.log(userToken)
-        axios({
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": userToken
-            },
-            method: "post",
-            url: "/api/user/getUserInfo",
-        }).then(data => {
-            console.log(data)
-            username.value = data.data.Data.username
-            description.value = data.data.Data.description
-        }).catch(err => {
-            console.log(err)
-            message.error("啊哦！我们在获取你的账号信息时出现了一些问题QAQ")
-        })
+    async function gatherUserInfo(){
+        let userData = user.getUserInfo(localStorage.getItem("MEMESA_TOKEN"))
+        username.value = userData.username
+        description.value = userData.description
     }
 
-    function getAvatarAddress(){
-    console.log(AvatarHandler.getAvatarAddress() == "")
-    if (AvatarHandler.getAvatarAddress() != undefined && AvatarHandler.getAvatarAddress() != ""){
-        avatarAddress.value = AvatarHandler.getAvatarAddress()
+    async function getAvatarAddress(){
+        if (localStorage.getItem("MEMESA_AVATAR") != undefined){
+            avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+            return
+        }
+        else{
+            let result = await AvatarHandler.getUserAvatarAddress(true)
+            if (!result){
+                return
+            }
+            avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+            return
+        }
     }
-    else{
-        AvatarHandler.getUserAvatarAddress(true)
-        avatarAddress.value = AvatarHandler.getAvatarAddress()
-    }
-}
 
     setTimeout(gatherUserInfo, 500)
     getAvatarAddress()
