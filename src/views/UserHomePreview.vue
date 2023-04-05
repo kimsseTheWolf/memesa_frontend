@@ -9,7 +9,7 @@ import { useRoute } from 'vue-router';
 
 const targetUsername = ref("")
 const targetDescription = ref("")
-const targetID = ref("")
+const targetID = ref(0)
 const targetAvatarAddr = ref("")
 const isSubscripted = ref(false)
 const route = useRoute()
@@ -38,18 +38,22 @@ async function userInfoTrigger(){
 }
 
 async function getTargetUserAvatar(){
-    if (localStorage.getItem("TEMP_USERAVATAR") != undefined){
-        targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
+    // if (localStorage.getItem("TEMP_USERAVATAR") != undefined){
+    //     targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
+    //     return
+    // }
+    // else{
+    //     let result = await avatar.getUserAvatarAddress(false, inputID.value)
+    //     if (!result){
+    //         return
+    //     }
+    //     targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
+    // }
+    let result = await avatar.getUserAvatarAddress(false, inputID.value)
+    if (!result){
         return
     }
-    else{
-        let result = await avatar.getUserAvatarAddress(false, inputID.value)
-        if (!result){
-            return
-        }
-        avatar.value = localStorage.getItem("TEMP_USERAVATAR")
-        targetAvatarAddr
-    }
+    targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
 }
 
 async function getUserSupscriptionInfo(){
@@ -71,6 +75,11 @@ async function getUserSupscriptionInfo(){
 }
 
 async function subscribeUser(){
+    console.log(targetID.value, " is the targetID value")
+    if (inputID.value == targetID.value){
+        message.warning("自己关注自己？你搁着套娃啊？")
+        return
+    }
     let result = await subscriptions.addSubscription(inputID.value)
     getUserSupscriptionInfo()
 }
@@ -99,7 +108,7 @@ setTimeout(() => {
                 <div style="width: fit-content;">{{targetDescription}}</div>
                 <div style="width: fit-content; color: gray; font-size: small;">
                     <img src="@/assets/uid.svg">
-                    {{ targetID }}
+                    {{ inputID }}
                 </div>
             </span>
             <Button type="primary" @click="subscribeUser" v-if="!isSubscripted">关注</Button>

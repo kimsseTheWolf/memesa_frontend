@@ -26,6 +26,14 @@ const selectedKeys = ref(['user'])
                         </RouterLink>
                     </MenuItemGroup>
                 </SubMenu>
+                <SubMenu key="general">
+                    <template #title>通用</template>
+                    <MenuItemGroup>
+                        <RouterLink class="normal" to="/settings/general/language">
+                            <MenuItem key="general/language">语言 Language</MenuItem>
+                        </RouterLink>
+                    </MenuItemGroup>
+                </SubMenu>
             
             </Menu>
         </LayoutSider>

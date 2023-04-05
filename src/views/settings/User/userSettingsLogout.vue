@@ -2,7 +2,7 @@
 import { Button, Modal, Divider, Alert, message, Input, InputPassword } from 'ant-design-vue';
 import { ref } from 'vue'
 import router from '@/router'
-import VerifyPassword from '../../components/VerifyPassword.vue';
+import VerifyPassword from '../../../components/VerifyPassword.vue';
 import axios from 'axios';
 import QueryString from 'qs';
 

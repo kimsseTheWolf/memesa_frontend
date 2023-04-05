@@ -42,19 +42,23 @@ const routes = [
     children: [
       {
         path: 'user/basicInfo',
-        component: ()=>import('@/views/settings/userSettingsBasicInfo.vue')
+        component: ()=>import('@/views/settings/User/userSettingsBasicInfo.vue')
       },
       {
         path: 'user/logout',
-        component: ()=>import('@/views/settings/userSettingsLogout.vue')
+        component: ()=>import('@/views/settings/User/userSettingsLogout.vue')
       },
       {
         path: 'user/agreement',
-        component: ()=>import('@/views/settings/userSettingsContract.vue')
+        component: ()=>import('@/views/settings/User/userSettingsContract.vue')
       },
       {
         path: 'user/sensitiveInformation',
-        component: ()=>import('@/views/settings/userSettingsPassword.vue')
+        component: ()=>import('@/views/settings/User/userSettingsPassword.vue')
+      },
+      {
+        path: 'general/language',
+        component: ()=>import('@/views/settings/General/generalSettingsLanguage.vue')
       }
     ]
   },
@@ -66,7 +70,17 @@ const routes = [
   {
     path: '/moment',
     name: 'User Moments',
-    component: ()=>import('@/views/MomentsPage.vue')
+    component: ()=>import('@/views/MomentsPage.vue'),
+    children: [
+      {
+        path: 'discover',
+        component: ()=>import('@/views/moments/discoverPage.vue')
+      },
+      {
+        path: 'subscribe',
+        component: ()=>import('@/views/moments/subscribePage.vue')
+      }
+    ]
   },
   {
     path: '/user/:id',
