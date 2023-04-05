@@ -6,7 +6,7 @@ const userID = ref("31")
 const userData = ref({})
 
 async function getUserData(){
-    userData.value = await user.getUserBasicInfo(31)
+    userData.value = await user.getUserBasicInfo(32)
 }
 </script>
 <template>

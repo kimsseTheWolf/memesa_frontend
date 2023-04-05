@@ -70,90 +70,32 @@ function beforeUpload(file) {
 
 async function uploadAvatar(){
     avatarProcessing.value = true
-    // store the file to the external server first
-    let avatarToken = await avatarHandler.generateAccessToken()
-    console.log(avatarToken)
-    // generate smfile and formdata to prepare
-    setTimeout(() => {
-        let formData = new FormData()
-        formData.append("smfile",fileList.value[0])
-        formData.append("format", "json")
-        console.log(fileList.value[0])
-        // upload
-        console.log(localStorage.getItem("AVATAR_TOKEN") + " is the token from the external server")
-        axios({
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Authorization": localStorage.getItem("AVATAR_TOKEN"),
-            },
-            method: "post",
-            url: "/imgAPI/upload",
-            data: formData,
-        }).then(data => {
-            console.log(localStorage.getItem("AVATAR_TOKEN") + " is the token from the external server")
-            if (data.data.success != true && data.data.code != 'image_repeated'){
-                message.error("头像上传失败")
-                console.log(data.data)
-                avatarProcessing.value = false
-                return
-            }
-            // gather the url of the image
-            if (data.data.code == 'image_repeated'){
-                localStorage.setItem("MEMESA_AVATAR", data.data.images)
-                console.log("URL has already saved into local but waiting for upload to our own server")
-            }
-            else {
-                let userAvatarAddress = data.data.data.url
-                // save the url in local and our own server
-                localStorage.setItem("MEMESA_AVATAR", userAvatarAddress)
-                console.log("URL has already saved into local but waiting for upload to our own server")
-            }
-            // upload this link to the server
-            let requestData = {
-                "address": localStorage.getItem("MEMESA_AVATAR")
-            }
-            axios({
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Authorization": localStorage.getItem("MEMESA_TOKEN")
-                },
-                method: "post",
-                url: "/api/avatar/add",
-                data: QueryString.stringify(requestData)
-            }).then(data => {
-                if (data.data.Code != 200){
-                    message.warning("头像未成功上传至本地服务器，但是已经可以使用")
-                    avatarProcessing.value = false
-                    return
-                }
-                message.success("头像上传成功！")
-                avatarProcessing.value = false
-                return
-            }).catch(err => {
-                message.error("头像上传失败")
-                avatarProcessing.value = false
-                return
-            })
-        }).catch(err => {
-            message.error("头像上传失败")
-            avatarProcessing.value = false
-            return
-        })
-    }, 500);
+    let result = await avatarHandler.uploadAvatar(fileList.value[0])
+    if (!result){
+        message.error("上传失败")
+    }
+    else {
+        message.success("上传成功")
+    }
+    avatarProcessing.value = false
 }
 
 function getPicture(e){
     fileList.value.push(e.target.files[0])
 }
 
-function getAvatarAddress(){
-    console.log(avatarHandler.getAvatarAddress() == "")
-    if (avatarHandler.getAvatarAddress() != undefined && avatarHandler.getAvatarAddress() != ""){
-        avatarAddress.value = avatarHandler.getAvatarAddress()
+async function getAvatarAddress(){
+    if (localStorage.getItem("MEMESA_AVATAR") != undefined){
+        avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+        return
     }
     else{
-        avatarHandler.getUserAvatarAddress(true)
-        avatarAddress.value = avatarHandler.getAvatarAddress()
+        let result = await avatarHandler.getUserAvatarAddress(true)
+        if (!result){
+            return
+        }
+        avatarAddress.value = localStorage.getItem("MEMESA_AVATAR")
+        return
     }
 }
 

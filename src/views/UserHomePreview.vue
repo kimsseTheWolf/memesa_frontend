@@ -21,13 +21,9 @@ const inputID = computed(()=>{
 
 async function getTargetUserInfo(){
     // directly get the user info from the local source
-    let UserInfoStr = localStorage.getItem("TEMP_USERINFO")
-    let UserInfo = JSON.parse(UserInfoStr)
-    console.log(UserInfo)
-    targetUsername.value = UserInfo.username
-    targetDescription.value = UserInfo.description
-    targetID.value = UserInfo.id
-    localStorage.removeItem("TEMP_USERINFO")
+    let userData = await user.getUserBasicInfo(inputID.value)
+    targetUsername.value = userData.username
+    targetDescription.value = userData.description
     // get user following list
     let followingList = await subscriptions.getUserFollowingList(inputID.value)
     followingNumber.value = followingList.length
