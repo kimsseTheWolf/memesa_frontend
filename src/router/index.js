@@ -79,6 +79,10 @@ const routes = [
       {
         path: 'subscribe',
         component: ()=>import('@/views/moments/subscribePage.vue')
+      },
+      {
+        path: 'myMoments',
+        component: ()=>import('@/views/moments/myMoments.vue')
       }
     ]
   },

@@ -16,5 +16,41 @@
             "gotoUserHomepage": "Goto Profile",
             "exit": "Logout"
         }
+    },
+    "UserHomepage": {
+        "title": "Profile",
+        "mainBox": {
+            "avatarOccupation": "Login",
+            "modifyUserInfoBtn": "Modify my Profile",
+            "followingNum": "Following",
+            "followerNum": "Followers",
+            "videoNum": "Videos"
+        },
+        "history": {
+            "title": "History",
+            "description": "Your recently played video will appears here",
+            "emptyOccupation": "Nothing but air here...",
+            "moreHistoryBtn": "View more history"
+        },
+        "favorite": {
+            "title": "Favorites",
+            "description": "Favorite a video and they will appears here",
+            "emptyOccupation": "Nothing but air here... Why not create a collection first?",
+            "checkAllBtn": "View all favorites",
+            "createNewBtn": "Create new collections"
+        },
+        "moments": {
+            "title": "Moments",
+            "description": "Your recent moments will appear here. For more mements, please visit Moments page.",
+            "gotoMomentsBtn": "View my moments"
+        },
+        "moreFeatures": {
+            "title": "More",
+            "workManager": "My Videos",
+            "settings": "Settings",
+            "account": "Account",
+            "qa": "FAQ",
+            "beta": "Beta"
+        }
     }
 }

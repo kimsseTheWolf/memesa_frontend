@@ -38,17 +38,6 @@ async function userInfoTrigger(){
 }
 
 async function getTargetUserAvatar(){
-    // if (localStorage.getItem("TEMP_USERAVATAR") != undefined){
-    //     targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
-    //     return
-    // }
-    // else{
-    //     let result = await avatar.getUserAvatarAddress(false, inputID.value)
-    //     if (!result){
-    //         return
-    //     }
-    //     targetAvatarAddr.value = localStorage.getItem("TEMP_USERAVATAR")
-    // }
     let result = await avatar.getUserAvatarAddress(false, inputID.value)
     if (!result){
         return

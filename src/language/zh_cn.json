@@ -16,5 +16,41 @@
             "gotoUserHomepage": "前往个人主页",
             "exit": "退出登录"
         }
+    },
+    "UserHomepage": {
+        "title": "我",
+        "mainBox": {
+            "avatarOccupation": "登录",
+            "modifyUserInfoBtn": "修改我的个人资料",
+            "followingNum": "关注",
+            "followerNum": "粉丝",
+            "videoNum": "稿件"
+        },
+        "history": {
+            "title": "播放历史",
+            "description": "播放过的视频将会出现在这里",
+            "emptyOccupation": "这里空空如也",
+            "moreHistoryBtn": "查看更多历史"
+        },
+        "favorite": {
+            "title": "收藏",
+            "description": "喜欢的视频或者音频可以放在收藏夹里哦",
+            "emptyOccupation": "这里空空如也，要不咱先创建一个收藏夹？",
+            "checkAllBtn": "查看所有收藏",
+            "createNewBtn": "创建新的收藏夹"
+        },
+        "moments": {
+            "title": "我的动态",
+            "description": "最近的动态将会展示在这里，更多历史动态请前往动态页面",
+            "gotoMomentsBtn": "前往动态"
+        },
+        "moreFeatures": {
+            "title": "更多功能",
+            "workManager": "创作者中心",
+            "settings": "设置",
+            "account": "账号选项",
+            "qa": "答疑中心",
+            "beta": "测试"
+        }
     }
 }

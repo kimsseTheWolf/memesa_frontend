@@ -20,6 +20,11 @@ import { Menu, MenuItem } from 'ant-design-vue';
                 关注
             </RouterLink>
         </MenuItem>
+        <MenuItem>
+        <RouterLink to="/moment/myMoments">
+            我的动态
+        </RouterLink>
+    </MenuItem>
         
     </Menu>
     <RouterView>

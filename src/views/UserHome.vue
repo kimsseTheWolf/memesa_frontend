@@ -55,7 +55,8 @@ gatherUserInfo()
 getAvatarAddress()
 </script>
 <template>
-    <h1 class="page-title">我</h1>
+    <!-- 我 -->
+    <h1 class="page-title">{{$t('UserHomepage.title')}}</h1>
     <LoginRequireBox v-show="!isLoggedIn"/>
     <div v-if="isLoggedIn">
         <div class="static-content-block">
@@ -63,7 +64,8 @@ getAvatarAddress()
                 <Avatar :size="60" :src="avatarAddress">
                     <img :src="avatarAddress" v-if="avatarAddress != ''">
                     <div v-if="avatarAddress == ''">
-                        登录
+                        <!-- 登录占位符 -->
+                        {{$t('UserHomepage.mainBox.avatarOccupation')}}
                     </div>
                 </Avatar>
                 <span class="inline-title">
@@ -75,65 +77,82 @@ getAvatarAddress()
                     </div>
                 </span>
                 <RouterLink to="/settings">
-                    <Button type="primary">修改我的个人资料</Button>
+                    <!-- 修改我的个人资料 -->
+                    <Button type="primary">{{$t('UserHomepage.mainBox.modifyUserInfoBtn')}}</Button>
                 </RouterLink>
                 
             </div>
             <div>
                 <div style="display: inline-block; margin-right: 7px;">
-                    <img src="@/assets/subscribe.svg"><b>关注数 </b> {{ followingNumber }}
+                    <!-- 关注 -->
+                    <img src="@/assets/subscribe.svg"><b>{{$t('UserHomepage.mainBox.followingNum')}} </b> {{ followingNumber }}
                 </div>
                 <div style="display: inline-block; margin-right: 7px;">
-                    <img src="@/assets/fens.svg"><b>粉丝数 </b> {{ followingNumber }}
+                    <!-- 粉丝 -->
+                    <img src="@/assets/fens.svg"><b>{{$t('UserHomepage.mainBox.followerNum')}} </b> {{ followingNumber }}
                 </div>
                 <div style="display: inline-block; margin-right: 7px;">
-                    <img src="@/assets/video.svg"><b>稿件数 </b> {{ followingNumber }}
+                    <!-- 稿件 -->
+                    <img src="@/assets/video.svg"><b>{{$t('UserHomepage.mainBox.videoNum')}} </b> {{ followingNumber }}
                 </div>
             </div>
             
         </div>
         <div class="static-content-block">
-            <h2>播放历史</h2>
-            播放过的视频将会出现在这里<br>
+            <!-- 历史 -->
+            <h2>{{$t('UserHomepage.history.title')}}</h2>
+            {{$t('UserHomepage.history.description')}}<br>
             <div>
-                这里空空如也~
+                <!-- 空占位 -->
+                {{$t('UserHomepage.history.emptyOccupation')}}
             </div>
             <RouterLink to="/history">
-                <Button type="primary" style="margin: 5px;">查看更多历史</Button>
+                <Button type="primary" style="margin: 5px;">{{$t('UserHomepage.history.moreHistoryBtn')}}</Button>
             </RouterLink>
         </div>
         <div class="static-content-block">
-            <h2>收藏</h2>
-            喜欢的视频或者音频可以放在收藏夹里哦
+            <!-- 收藏 -->
+            <h2>{{$t('UserHomepage.favorite.title')}}</h2>
+            {{$t('UserHomepage.favorite.description')}}
             <div>
-                这里空空如也，要不咱先创建一个收藏夹？
+                <!-- 空占位 -->
+                {{$t('UserHomepage.favorite.title')}}
             </div>
-            <Button type="primary" style="margin: 5px;">查看所有收藏</Button>
-            <Button style="margin: 5px;">创建新的收藏夹</Button>
+            <Button type="primary" style="margin: 5px;">{{$t('UserHomepage.favorite.checkAllBtn')}}</Button>
+            <Button style="margin: 5px;">{{$t('UserHomepage.favorite.createNewBtn')}}</Button>
         </div>
         <div class="static-content-block">
-            <h2>我的动态</h2>
-            最近的动态将会展示在这里，更多历史动态请前往动态页面<br>
-            <RouterLink to="/moment">
-                <Button type="primary" style="margin: 5px;">前往动态</Button>
+            <!-- 动态 -->
+            <h2>{{$t('UserHomepage.moments.title')}}</h2>
+            {{$t('UserHomepage.moments.description')}}<br>
+            <div>
+                <!-- 空占位 -->
+            </div>
+            <RouterLink to="/moment/myMoments">
+                <Button type="primary" style="margin: 5px;">{{$t('UserHomepage.moments.gotoMomentsBtn')}}</Button>
             </RouterLink>
         </div>
         <div class="static-content-block">
-            <h2>更多功能</h2>
+            <h2>{{$t('UserHomepage.moreFeatures.title')}}</h2>
             <RouterLink to="/workManager">
-                <inlineContentBox content="创作者中心" icon="workManager"/>
+                <!-- 创作者中心 -->
+                <inlineContentBox :content="$t('UserHomepage.moreFeatures.workManager')" icon="workManager"/>
             </RouterLink>
             <RouterLink to="/settings">
-                <inlineContentBox content="设置" icon="settings"/>
+                <!-- 设置 -->
+                <inlineContentBox :content="$t('UserHomepage.moreFeatures.settings')" icon="settings"/>
             </RouterLink>
             <RouterLink to="/settings/user/basicInfo">
-                <inlineContentBox content="账号选项" icon="user"/>
+                <!-- 账号选项 -->
+                <inlineContentBox :content="$t('UserHomepage.moreFeatures.account')" icon="user"/>
             </RouterLink>
             <RouterLink to="/faq">
-                <inlineContentBox content="答疑中心" icon="contact"/>
+                <!-- 答疑中心 -->
+                <inlineContentBox :content="$t('UserHomepage.moreFeatures.qa')" icon="contact"/>
             </RouterLink>
             <RouterLink to="/beta">
-                <inlineContentBox content="测试" icon="contact"/>
+                <!-- 测试 -->
+                <inlineContentBox :content="$t('UserHomepage.moreFeatures.beta')" icon="contact"/>
             </RouterLink>
         </div>
         
