@@ -1,5 +1,20 @@
 {
     "test": {
         "greetings": "Hello Memesa"
+    },
+    "HeaderBox": {
+        "searchBar": "Search meme, music, or videos",
+        "history": "History",
+        "moments": "Moments",
+        "workManager": "Work Manager",
+        "userAvatar": {
+            "title": "Profile",
+            "tips": "Click to enter your profile!",
+            "loginTips": "Login to access full function of Memesa",
+            "login": "Login",
+            "register": "Sign Up",
+            "gotoUserHomepage": "Goto Profile",
+            "exit": "Logout"
+        }
     }
 }

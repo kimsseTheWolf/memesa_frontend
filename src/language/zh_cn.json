@@ -1,5 +1,20 @@
 {
     "test": {
         "greetings": "你好Memesa"
+    },
+    "HeaderBox": {
+        "searchBar": "搜索手书，音乐，或者视频",
+        "history": "历史记录",
+        "moments": "动态",
+        "workManager": "稿件管理",
+        "userAvatar": {
+            "title": "个人主页",
+            "tips": "点击进入个人中心",
+            "loginTips": "登录即可访问全部功能哦！",
+            "login": "登录",
+            "register": "注册",
+            "gotoUserHomepage": "前往个人主页",
+            "exit": "退出登录"
+        }
     }
 }

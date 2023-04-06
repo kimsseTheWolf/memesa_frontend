@@ -51,11 +51,11 @@
         <Button ghost>
             <img src="../assets/search.svg">
         </Button>
-        <Input width="600px" id="search-input-box" placeholder="搜索手书，音乐，或者视频"/>
+        <Input width="600px" id="search-input-box" :placeholder="$t('HeaderBox.searchBar')"/>
         <div class="right-align-box">
             <Tooltip>
                 <template #title>
-                    历史记录
+                    {{ $t('HeaderBox.history') }}
                 </template>
                 <RouterLink to="/history">
                     <img src="@/assets/history.svg" id="clickable" style="margin-right: 5px;">
@@ -63,7 +63,7 @@
             </Tooltip>
             <Tooltip>
                 <template #title>
-                    动态
+                    {{ $t('HeaderBox.moments') }}
                 </template>
                 <RouterLink to="/moment" class="right-icons">
                     <img src="@/assets/moment.svg" id="clickable" style="width: 32px;">
@@ -71,26 +71,26 @@
             </Tooltip>
             <Tooltip>
                 <template #title>
-                    稿件管理
+                    {{ $t('HeaderBox.workManager') }}
                 </template>
                 <RouterLink to="/workManager" class="right-icons">
                     <img id="clickable" src="../assets/ico_uploadManage.svg">
                 </RouterLink>
             </Tooltip>
-            <Popover title="个人中心" style="width: 200px;">
+            <Popover :title="$t('HeaderBox.userAvatar.title')" style="width: 200px;">
                 <RouterLink to="/personHomepage" class="normal-link">
                     <Avatar size="large" id="clickable" :src="avatarAddress"></Avatar>
                 </RouterLink>
                 <template #content>
-                    点击进入个人中心！<br>
+                    {{ $t('HeaderBox.userAvatar.tips') }}<br>
                     <div style="text-align: center; margin-top: 10px;">
                         <div v-if="username == ''">
-                            登录即可享受全部功能哦！<br>
+                            {{ $t('HeaderBox.userAvatar.loginTips') }}<br>
                             <RouterLink to="/login">
-                                <Button type="primary">登录</Button>
+                                <Button type="primary">{{ $t('HeaderBox.userAvatar.login') }}</Button>
                             </RouterLink>
                             <RouterLink to="/register">
-                                <Button>注册</Button>
+                                <Button>{{ $t('HeaderBox.userAvatar.register') }}</Button>
                             </RouterLink>
                         </div>
                         <div v-else>
@@ -100,11 +100,11 @@
                                 {{ description }}
                             </div>
                             <RouterLink to="/personHomepage" style="color: white;">
-                                <Button type="primary">前往个人主页</Button>
+                                <Button type="primary">{{ $t('HeaderBox.userAvatar.gotoUserHomepage') }}</Button>
                             </RouterLink>
                             <br>
                             <RouterLink to="/settings/user/logout" style="color: white; margin-top: 10px;">
-                                <Button type="link" danger>退出登录</Button>
+                                <Button type="link" danger>{{ $t('HeaderBox.userAvatar.exit') }}</Button>
                             </RouterLink>
                         </div>
                     </div>
