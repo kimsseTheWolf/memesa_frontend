@@ -35,4 +35,7 @@ async function getUserData(){
         </Button>
         {{ userData }}
     </div>
+    <div class="static-content-block">
+        <h2>多语言测试</h2>
+    </div>
 </template>
