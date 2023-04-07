@@ -1,11 +1,20 @@
 <script setup>
-import { Select, SelectOption, Divider, Button } from 'ant-design-vue';
+import { Select, SelectOption, Divider, Button, message } from 'ant-design-vue';
 import { ref } from 'vue';
 
 const selectedLanguageCode = ref("zh_cn")
 
 function changeLanguage(){
     localStorage.setItem("MEMESA_LANGUAGE", selectedLanguageCode.value)
+    if (selectedLanguageCode.value == "zh_cn"){
+        message.info("语言设置将会在刷新页面后生效")
+    }
+    else if (selectedLanguageCode.value == "zh_tw"){
+        message.info("語言設置將會在刷新頁面后生效")
+    }
+    else if (selectedLanguageCode.value == "en_us"){
+        message.info("Language Preferences will take effect after refresh the page")
+    }
 }
 
 function initializeSelection(){
