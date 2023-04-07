@@ -4,12 +4,22 @@ import { ref } from 'vue';
 import axios from 'axios';
 import QueryString from 'qs';
 import avatar from '@/js/avatar';
+import I18n from 'vue-i18n';
+import generalSettingsLanguage from '@/views/settings/General/generalSettingsLanguage.vue';
 
 const username = ref("")
 const password = ref("")
 const keepAlive = ref(false)
 const displaySuccessDialogStatus = ref(false)
+const displayLangMenu = ref(false)
 
+function triggerLangMenu(){
+    displayLangMenu.value = !displayLangMenu.value
+}
+
+function refreshPage(){
+    location.reload()
+}
 
 function getLoginResult(){
     // check input validation
@@ -38,10 +48,10 @@ function getLoginResult(){
         // send a request to get the user avatar
         let avatarAddress = avatar.getUserAvatarAddress(username.value)
         localStorage.setItem("MEMESA_AVATAR", avatarAddress)
-        message.success("登录成功")
+        message.success(I18n.t('Login.message.success'))
         showSuccessDialog()
     }).catch((err) => {
-        message.error("用户名或密码错误")
+        message.error(I18n.t('Login.message.failed'))
         console.log(err)
         return
     })
@@ -57,30 +67,38 @@ function showSuccessDialog(){
     <div class="mainDIv">
         <div class="leftDiv"></div>
         <div class="rightDiv">
-            <h1>登录Memesa</h1>
-            在这里登录，或注册一个账号
-            <Input style="width: 90%; margin: 5px;" placeholder="用户名" v-model:value="username">
+            <h1>{{$t('Login.title')}}</h1>
+            {{$t('Login.description')}}
+            <Input style="width: 90%; margin: 5px;" :placeholder="$t('Login.usernamePlaceHolder')" v-model:value="username">
                 <template #prefix>
                     <img src="@/assets/user.svg">
                 </template>
             </Input>
-            <InputPassword style="width: 90%; margin: 5px;" placeholder="密码" v-model:value="password">
+            <InputPassword style="width: 90%; margin: 5px;" :placeholder="$t('Login.passwordPlaceHolder')" v-model:value="password">
                 <template #prefix>
                     <img src="@/assets/lock.svg">
                 </template>
             </InputPassword>
-            <Checkbox>记住我</Checkbox><br>
-            <Button type="primary" style="margin: 5px;" @click="getLoginResult">登录</Button>
+            <Checkbox>{{$t('Login.rememberMeCheckBx')}}</Checkbox><br>
+            <Button type="primary" style="margin: 5px;" @click="getLoginResult">{{$t('Login.loginBtn')}}</Button>
             <RouterLink to="/register">
-                <Button type="link" style="margin: 5px;">注册</Button>
+                <Button type="link" style="margin: 5px;">{{$t('Login.registerBtn')}}</Button>
             </RouterLink>
-            <Modal title="登录成功！" v-model:visible="displaySuccessDialogStatus">
-                <p>您现在可以访问所有的Memesa功能了。</p>
+            <Button style="float: right;" @click="triggerLangMenu">
+                <template #icon>
+                    <img src="@/assets/language.svg" width="20">
+                </template>
+            </Button>
+            <Modal :title="$t('Login.successModal.title')" v-model:visible="displaySuccessDialogStatus">
+                <p>{{$t('Login.successModal.description')}}</p>
                 <template #footer>
                     <RouterLink to="/personHomepage">
-                        <Button type="primary">前往个人主页</Button>
+                        <Button type="primary">{{$t('Login.successModal.continueBtn')}}</Button>
                     </RouterLink>
                 </template>
+            </Modal>
+            <Modal title="Language Preferences" v-bind:visible="displayLangMenu" v-on:ok="refreshPage" v-on:cancel="triggerLangMenu">
+                <generalSettingsLanguage/>
             </Modal>
         </div>
     </div>

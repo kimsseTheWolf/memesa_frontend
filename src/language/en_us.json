@@ -17,6 +17,24 @@
             "exit": "Logout"
         }
     },
+    "Login": {
+        "title": "Login",
+        "description": "Login here, or create a new account",
+        "usernamePlaceHolder": "Username",
+        "passwordPlaceHolder": "Password",
+        "rememberMeCheckBx": "Remember me",
+        "loginBtn": "Login",
+        "registerBtn": "Sign Up",
+        "successModal": {
+            "title": "Success",
+            "description": "Now you can access to the full features of memewsa",
+            "continueBtn": "Open Profile"
+        },
+        "message": {
+            "success": "Success",
+            "failed": "Username or password does not match"
+        }
+    },
     "UserHomepage": {
         "title": "Profile",
         "mainBox": {
