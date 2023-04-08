@@ -1,10 +1,11 @@
 <script setup>
 import { Input, InputPassword, Button, message, Checkbox, Modal } from 'ant-design-vue'
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import axios from 'axios';
 import QueryString from 'qs';
 import avatar from '@/js/avatar';
-import I18n from 'vue-i18n';
+import language from '@/js/language';
 import generalSettingsLanguage from '@/views/settings/General/generalSettingsLanguage.vue';
 
 const username = ref("")
@@ -12,6 +13,7 @@ const password = ref("")
 const keepAlive = ref(false)
 const displaySuccessDialogStatus = ref(false)
 const displayLangMenu = ref(false)
+const t = useI18n()
 
 function triggerLangMenu(){
     displayLangMenu.value = !displayLangMenu.value
@@ -48,10 +50,10 @@ function getLoginResult(){
         // send a request to get the user avatar
         let avatarAddress = avatar.getUserAvatarAddress(username.value)
         localStorage.setItem("MEMESA_AVATAR", avatarAddress)
-        message.success(I18n.t('Login.message.success'))
+        message.success(t.t("Login.message.success"))
         showSuccessDialog()
     }).catch((err) => {
-        message.error(I18n.t('Login.message.failed'))
+        message.error(t.t("Login.message.failed"))
         console.log(err)
         return
     })
