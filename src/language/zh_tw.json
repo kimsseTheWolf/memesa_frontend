@@ -17,6 +17,24 @@
             "exit": "退出登錄"
         }
     },
+    "Login": {
+        "title": "登錄Memesa",
+        "description": "在這裏登錄，或者注冊一個賬號",
+        "usernamePlaceHolder": "用戶名",
+        "passwordPlaceHolder": "密碼",
+        "rememberMeCheckBx": "記住我",
+        "loginBtn": "登錄",
+        "registerBtn": "注冊",
+        "successModal": {
+            "title": "登錄成功！",
+            "description": "您現在可以訪問Memesa的全部功能了",
+            "continueBtn": "前往個人主頁"
+        },
+        "message": {
+            "success": "登錄成功",
+            "failed": "用戶名或密碼錯誤"
+        }
+    },
     "UserHomepage": {
         "title": "我",
         "mainBox": {
