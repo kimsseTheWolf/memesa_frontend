@@ -16,7 +16,8 @@ const uploadDrawerVisible = ref(false)
         完成后点击右上角发布即可
         <Textarea :bordered="false" placeholder="说些什么吧" style="margin-top: 5px;"></Textarea>
         <Upload list-type="picture-card">
-            上传最多4个图片
+            <img src="@/assets/plus-circle.svg">
+            <div style="margin-top: 8px;">上传最多4个图片</div>
         </Upload>
     </Drawer>
 </template>
