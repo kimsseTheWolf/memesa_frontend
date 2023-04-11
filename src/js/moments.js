@@ -1,4 +1,5 @@
 import axios from "axios"
+import qs from 'qs'
 
 let username = "kimsseTheWolf"
 let password = "Jinbohan@070401"
@@ -89,6 +90,7 @@ async function uploadMomentToDatabase(content, urlList, isPublic){
             },
             method: "post",
             url: "/api/moments/add",
+            data: qs.stringify(targetData)
         }).then(data => {
             if (data.data.Code != 200){
                 res(false)
