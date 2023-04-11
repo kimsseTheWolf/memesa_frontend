@@ -35,6 +35,13 @@
             "failed": "Username or password does not match"
         }
     },
+    "LoginRequireBox": {
+        "title": "You are not login yet...",
+        "description": "Login to Memesa to access full features.",
+        "login": "Login",
+        "middleword": "or",
+        "register": "Register"
+    },
     "UserHomepage": {
         "title": "Profile",
         "mainBox": {
@@ -69,6 +76,15 @@
             "account": "Account",
             "qa": "FAQ",
             "beta": "Beta"
+        },
+        "messages": {
+            "cannotGatherInfo": "Oh no, we can't gather your profile right now..."
+        },
+        "hidden": {
+            "username": "Not Logged in",
+            "email": "Unknown",
+            "userid": "Unknown",
+            "description": "He / She left nothing here... That's auwful bro!"
         }
     }
 }

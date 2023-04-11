@@ -5,6 +5,7 @@ import { Avatar, Button, message, Modal, Input, Textarea } from 'ant-design-vue'
 import inlineContentBox from '@/components/InlineContentBox.vue';
 import AvatarHandler from '@/js/avatar'
 import user from '@/js/user';
+import { useI18n } from 'vue-i18n';
 
 const isLoggedIn = computed(()=>{
     if (localStorage.getItem("MEMESA_TOKEN") == null){
@@ -14,18 +15,19 @@ const isLoggedIn = computed(()=>{
         return true
     }
 })
+const t = useI18n()
 
-const username = ref("未登录")
-const email = ref("未知邮箱")
-const userid = ref("未知UID")
-const description = ref("这个人很懒，什么也没写……")
+const username = ref(t.t('UserHomepage.hidden.username'))
+const email = ref(t.t('UserHomepage.hidden.email'))
+const userid = ref(t.t('UserHomepage.hidden.userid'))
+const description = ref(t.t('UserHomepage.hidden.description'))
 const password = ref("no_password")
 const avatarAddress = ref("")
 
 async function gatherUserInfo(){
     let userData = await user.getUserInfo(localStorage.getItem("MEMESA_TOKEN"))
     if (userData == null){
-        message.error("哦不！我们暂时无法获取你的个人信息")
+        message.error(t.t('UserHomepage.messages.cannotGatherInfo'))
         return
     }
     // setup the user data

@@ -1,24 +1,19 @@
 <script setup>
 import { Button } from 'ant-design-vue';
-// import { ref } from 'vue';
-
-// const username = ref("")
-// const password = ref("")
-// const email = ref("")
 
 </script>
 <template>
     <div class="static-warning-block">
-        <div class="static-warning-block-title">你还没有登录哦</div>
+        <div class="static-warning-block-title">{{ $t('LoginRequireBox.title') }}</div>
         <div class="static-warning-block-content">
-            登录Memesa即可解锁网站的全部功能！
+            {{$t('LoginRequireBox.description')}}
         </div>
         <RouterLink to="/login">
-            <Button type="primary">立即登录</Button>
+            <Button type="primary">{{$t('LoginRequireBox.login')}}</Button>
         </RouterLink>
-        或
+        {{$t('LoginRequireBox.middleword')}}
         <RouterLink to="/register">
-            <Button>注册一个账号</Button>
+            <Button>{{$t('LoginRequireBox.register')}}</Button>
         </RouterLink>
     </div>
 </template>

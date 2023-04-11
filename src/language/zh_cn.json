@@ -35,6 +35,13 @@
             "failed": "用户名或密码错误"
         }
     },
+    "LoginRequireBox": {
+        "title": "你还没有登录哦",
+        "description": "登录Memesa即可解锁网站的全部功能！",
+        "login": "立即登录",
+        "middleword": "或",
+        "register": "注册一个账号"
+    },
     "UserHomepage": {
         "title": "我",
         "mainBox": {
@@ -69,6 +76,15 @@
             "account": "账号选项",
             "qa": "答疑中心",
             "beta": "测试"
+        },
+        "messages": {
+            "cannotGatherInfo": "哦不！我们暂时无法获取你的个人信息"
+        },
+        "hidden": {
+            "username": "未登录",
+            "email": "未知邮箱",
+            "userid": "未知UID",
+            "description": "这个人很懒，什么也没写……"
         }
     }
 }

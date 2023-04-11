@@ -1,9 +1,18 @@
 <script setup>
 import { Menu, MenuItem } from 'ant-design-vue';
+import LoginRequireBox from '@/components/LoginRequireBox.vue';
+
+function isLoggedIn(){
+    if (localStorage.getItem("MEMESA_TOKEN") != undefined || localStorage.getItem("MEMESA_TOKEN") != null){
+        return true
+    }
+    return false
+}
 </script>
 <template>
     <h1 class="page-title">动态</h1>
-    <Menu mode="horizontal">
+    <LoginRequireBox v-if="!isLoggedIn()"/>
+    <Menu mode="horizontal" v-else>
         <MenuItem key="discover">
             <template #icon>
                 <img src="@/assets/compass.svg">
