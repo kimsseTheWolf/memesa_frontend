@@ -48,6 +48,7 @@ async function uploadMoment(fileList){
             targetFormData.append("format", "json")
             formDataList.push(targetFormData)
         }
+        console.log("FormDataList: ", formDataList)
         // Start Upload the images to the image server
         let returnList = []
         for (let i = 0; i < formDataList.length; i++){
@@ -60,7 +61,9 @@ async function uploadMoment(fileList){
                 url: "/imgAPI/upload",
                 data: formDataList[i],
             }).then(data => {
+                console.log("Image server response: ", data)
                 if (data.data.success != true && data.data.code != 'image_repeated'){
+                    console.log(data)
                     res({status: false, data: []})
                 }
                 // collect the url and append to the return list
@@ -76,6 +79,7 @@ async function uploadMoment(fileList){
             })
         }
         // finish all the steps, return data
+        console.log("Images Uploaded Successfully")
         res({status: true, data: returnList})
     })
 

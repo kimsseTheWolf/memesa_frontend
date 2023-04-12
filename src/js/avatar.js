@@ -134,8 +134,43 @@ function getUserAvatarAddress(isForSelf, id=0){
     })
 }
 
+function getAnyAvatarAddress(id){
+    return new Promise((res, rej) => {
+        let userToken = localStorage.getItem("MEMESA_TOKEN")
+        let targetAvatar = ""
+        axios({
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": userToken
+            },
+            method: "post",
+            url: "/api/avatar/getAny",
+            data: QueryString.stringify({
+                "userId": id
+            })
+        }).then(data => {
+            console.log("Request finished")
+            console.log(data)
+            // get the status from the data
+            if (data.data.Code == 200){
+                // success
+                console.log(data.data.Data.userAvatar)
+                targetAvatar = data.data.Data.userAvatar
+                res({status: true, address:targetAvatar})
+            }
+            else{
+                targetAvatar = ""
+                res({status: false, address:undefined})
+            }
+        }).catch(err => {
+            res({status: false, address:undefined})
+        })
+    })
+}
+
 export default{
     generateAccessToken,
     getUserAvatarAddress,
+    getAnyAvatarAddress,
     uploadAvatar,
 }

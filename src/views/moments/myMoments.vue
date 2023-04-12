@@ -2,12 +2,14 @@
 import { Button, Result, Drawer, Input, Textarea, Upload, Switch, Tooltip, message } from 'ant-design-vue';
 import { ref } from 'vue';
 import moments from '@/js/moments'
+import MomentsBox from '@/components/MomentsBox.vue';
 
 const uploadDrawerVisible = ref(false)
 const submitPublicPost = ref(true)
 const fileList = ref([])
 const momentsList = ref([])
 const content = ref("")
+
 
 function beforeUpload(file){
     // check whether the file could fulfill the upload requirement
@@ -21,13 +23,43 @@ function beforeUpload(file){
     }
 }
 
+function getPicture(e){
+    fileList.value.push(e.target.files[0])
+}
+
+async function processResultList(list){
+    // if (list.length < 4 && list.length != 0){
+    //     for (let i = 0; i < 4 ; i++){
+    //         list.push("0")
+    //     }
+    //     return list
+    // }
+    // else{
+    //     let targetResult = await processResultList(list)
+    //     return targetResult
+    // }
+    setTimeout(() => {
+
+    })
+}
+
 async function uploadMoments(){
     let result = await moments.uploadMoment(fileList.value)
-    console.log(result.data)
+    console.log("Executed after the result was received", result.data)
     if (!result.status){
-        message.error("上传失败")
+        message.error("上传失败（图片上传错误）")
         return
     }
+    else {
+        // convert
+        console.log("[IMPORTANT] Processed the sending value")
+        await setTimeout(() => {
+            for (let i = 0; i < 4 ; i++){
+                result.data.push("0")
+            }
+        }, 5000)
+    }
+    console.log("Processed List", result.data)
     let isPublic = 0
     if (submitPublicPost.value){
         isPublic = 1
@@ -41,15 +73,18 @@ async function uploadMoments(){
         return
     }
     message.success("上传成功")
+    getUserMomentsInfo()
 }
 
-async function getUserMomentsInfo(){
-    let userMoments = await moments.getUserMoments("self")
-    console.log(userMoments)
+function getUserMomentsInfo(){
+    let userMoments = moments.getUserMoments("self")
+    console.log(userMoments.data.data.Data)
     momentsList.value = userMoments.data.data.Data
 }
 
-getUserMomentsInfo()
+setTimeout(() => {
+    getUserMomentsInfo()
+}, 500);
 
 </script>
 <template>
@@ -62,7 +97,8 @@ getUserMomentsInfo()
         </template>
         <h2>发布新动态</h2>
         完成后点击右上角发布即可
-        <Textarea :bordered="false" placeholder="说些什么吧" style="margin-top: 5px;"></Textarea>
+        <Textarea :bordered="false" placeholder="说些什么吧" style="margin-top: 5px;" v-model:value="content"></Textarea>
+        <input type="file" accept="image/*" @change="getPicture($event)">
         <Upload list-type="picture-card" :max-count="4" v-model:file-list="fileList" :before-upload="beforeUpload">
             <img src="@/assets/plus-circle.svg" style="display: inline-block;">
             <!-- <div style="margin-top: 8px; display: inline-block;">上传最多4个图片</div> -->
@@ -75,4 +111,20 @@ getUserMomentsInfo()
         </Tooltip>
         <Switch v-model:checked="submitPublicPost"/>
     </Drawer>
+    <div class="main_moments_box">
+        <div v-for="i in momentsList" :key="i">
+            <MomentsBox :username="i.userid" :image_url="[i.img1, i.img2, i.img3, i.img4]" :isLiked="false" :uuid="i.uid" :id="i.userid">
+                <template #content>
+                    {{i.content}}
+                </template>
+            </MomentsBox>
+        </div>
+    </div>
+    
 </template>
+<style>
+.main_moments_box{
+    overflow-y: auto;
+    height: 600px;
+}
+</style>
