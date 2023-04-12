@@ -2,7 +2,7 @@
 import user from '@/js/user';
 import avatar from '@/js/avatar';
 import subscriptions from '@/js/subscriptions';
-import { Avatar, Button, message, Tooltip } from 'ant-design-vue';
+import { Avatar, Button, message, Tooltip, Menu, MenuItem } from 'ant-design-vue';
 import { ref, computed, created } from 'vue'
 import { useRoute } from 'vue-router';
 // import router from 'vue-router'
@@ -121,18 +121,27 @@ setTimeout(() => {
             </div>
         </div>
     </div>
-    <h2><b>TA的作品</b></h2>
-    <div class="static-content-block">
-        暂时还没有上传作品哦
-    </div>
-    <h2><b>TA的动态</b></h2>
-    <div class="static-content-block">
-        暂无动态
-    </div>
-    <h2><b>TA的素材</b></h2>
-    <div class="static-content-block">
-        TA还没有上传过素材
-    </div>
+    <Menu mode="horizontal">
+        <MenuItem key="videos">
+            <RouterLink :to="'/user/'+inputID+'/video'">
+                作品
+            </RouterLink>
+        </MenuItem>
+        <MenuItem key="moments">
+            <RouterLink :to="'/user/'+inputID+'/moments'">
+                动态
+            </RouterLink>
+        </MenuItem>
+        <MenuItem key="resources">
+            <RouterLink :to="'/user/'+inputID+'/resources'">
+                素材
+            </RouterLink>
+        </MenuItem>
+    </Menu>
+    <RouterView style="margin-top: 5px;">
+
+    </RouterView>
+
 </template>
 <style>
 .static-content-block{

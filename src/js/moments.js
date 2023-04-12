@@ -35,6 +35,11 @@ function generateAccessToken(){
 async function uploadMoment(fileList){
     let accessToken = await generateAccessToken()
     return new Promise((res, rej) => {
+        console.log(fileList.length)
+        if (fileList.length == 0){
+            console.log("No pictures to commit, skipping...")
+            res({status: true, data: ["0", "0", "0", "0"]})
+        }
         // Generate form data
         let formDataList = []
         for (let i = 0; i < fileList.length; i++){
@@ -78,11 +83,22 @@ async function uploadMoment(fileList){
 
 async function uploadMomentToDatabase(content, urlList, isPublic){
     return new Promise((res, rej) => {
+        console.log("Upload list: ", urlList)
+        let targetFormData = new FormData()
+        targetFormData["content"] = content
+        targetFormData["imgaes"] = urlList
+        targetFormData["public"] = isPublic
+        
         let targetData = {
             "content": content,
-            "images": urlList,
+            "images": qs.stringify(urlList),
             "public": isPublic
         }
+        console.log(qs.stringify({
+            images: urlList,
+            content: content,
+            isPublic: isPublic
+        }))
         axios({
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -90,7 +106,11 @@ async function uploadMomentToDatabase(content, urlList, isPublic){
             },
             method: "post",
             url: "/api/moments/add",
-            data: qs.stringify(targetData)
+            data: qs.stringify({
+                images: urlList,
+                content: content,
+                isPublic: isPublic
+            }, {indices: false})
         }).then(data => {
             if (data.data.Code != 200){
                 res(false)
@@ -103,7 +123,33 @@ async function uploadMomentToDatabase(content, urlList, isPublic){
     })
 }
 
+function getUserMoments(id){
+    return new Promise((res, rej) => {
+        let targetData = {
+            "id": id
+        }
+        axios({
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": localStorage.getItem("MEMESA_TOKEN")
+            },
+            method: "post",
+            url: "/api/moments/getMyMoments",
+            data: qs.stringify(targetData)
+        }).then(data => {
+            if (data.data.Code != 200){
+                res({status: false, data: undefined})
+            }
+            res({status: true, data: data})
+        }).catch(err => {
+            console.log(err)
+            res({status: false, data: undefined})
+        })
+    })
+}
+
 export default{
     uploadMoment,
-    uploadMomentToDatabase
+    uploadMomentToDatabase,
+    getUserMoments
 }

@@ -89,7 +89,21 @@ const routes = [
   {
     path: '/user/:id',
     name: 'Views for person is viewing others homepage',
-    component: UserHomePreviewVue
+    component: UserHomePreviewVue,
+    children: [
+      {
+        path: 'video',
+        component: ()=>import('@/views/UserHomePreview/videoPage.vue')
+      },
+      {
+        path: 'moments',
+        component: ()=>import('@/views/UserHomePreview/momentsPage.vue')
+      },
+      {
+        path: 'resources',
+        component: ()=>import('@/views/UserHomePreview/resourcesPage.vue')
+      },
+    ]
   },
   {
     path: '/user/full',

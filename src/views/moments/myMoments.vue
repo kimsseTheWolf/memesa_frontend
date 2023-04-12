@@ -1,10 +1,13 @@
 <script setup>
 import { Button, Result, Drawer, Input, Textarea, Upload, Switch, Tooltip, message } from 'ant-design-vue';
 import { ref } from 'vue';
+import moments from '@/js/moments'
 
 const uploadDrawerVisible = ref(false)
 const submitPublicPost = ref(true)
 const fileList = ref([])
+const momentsList = ref([])
+const content = ref("")
 
 function beforeUpload(file){
     // check whether the file could fulfill the upload requirement
@@ -18,18 +21,44 @@ function beforeUpload(file){
     }
 }
 
-function uploadMoments(){
-    
+async function uploadMoments(){
+    let result = await moments.uploadMoment(fileList.value)
+    console.log(result.data)
+    if (!result.status){
+        message.error("上传失败")
+        return
+    }
+    let isPublic = 0
+    if (submitPublicPost.value){
+        isPublic = 1
+    }
+    else {
+        isPublic = 0
+    }
+    let uploadResult = await moments.uploadMomentToDatabase(content.value, result.data, isPublic)
+    if (!uploadResult){
+        message.error("上传失败")
+        return
+    }
+    message.success("上传成功")
 }
+
+async function getUserMomentsInfo(){
+    let userMoments = await moments.getUserMoments("self")
+    console.log(userMoments)
+    momentsList.value = userMoments.data.data.Data
+}
+
+getUserMomentsInfo()
 
 </script>
 <template>
     <Button type="primary" style="margin-top: 5px;" @click="uploadDrawerVisible = !uploadDrawerVisible">发布新动态</Button>
-    <Result title="你还没有发布过动态" sub-title="点击左上方发布按钮发布你的第一个动态吧！"/>
+    <Result title="你还没有发布过动态" sub-title="点击左上方发布按钮发布你的第一个动态吧！" v-if="momentsList.length == 0"/>
     <Drawer title="发布新动态" placement="top" :visible="uploadDrawerVisible" @close="uploadDrawerVisible = !uploadDrawerVisible" height="600px" :rows="6">
         <template #extra>
-            <Button type="primary">发布</Button>
-            <Button>取消</Button>
+            <Button type="primary" @click="uploadMoments()">发布</Button>
+            <Button @click="uploadDrawerVisible = false">取消</Button>
         </template>
         <h2>发布新动态</h2>
         完成后点击右上角发布即可
