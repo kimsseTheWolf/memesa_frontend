@@ -42,6 +42,24 @@
         "middleword": "或",
         "register": "注册一个账号"
     },
+    "RegisterPage": {
+        "title": "注册Memesa",
+        "description": "欢迎来到Memesa，一个自由的手书分享网站！通过填写以下信息即可完成注册。",
+        "input": {
+            "username": "用户名",
+            "email": "邮箱",
+            "password": "密码"
+        },
+        "agreement": "我已同意《用户使用协议与条款》",
+        "register": "注册",
+        "isAccountExisted": "已有账号？",
+        "login": "登录",
+        "hidden": {
+            "nullInputError": "用户名，邮箱，密码为必填字段",
+            "success": "注册成功",
+            "failed": "注册失败：用户名不合法或已经被占用"
+        }
+    },
     "UserHomepage": {
         "title": "我",
         "mainBox": {

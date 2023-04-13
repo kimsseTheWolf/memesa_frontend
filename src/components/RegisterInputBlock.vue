@@ -1,19 +1,27 @@
 <script setup>
-import { Input, InputPassword, Button, Checkbox, message } from 'ant-design-vue';
+import { Input, InputPassword, Button, Checkbox, message, Modal } from 'ant-design-vue';
 import axios from 'axios';
 import QueryString from 'qs';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import generalSettingsLanguage from '@/views/settings/General/generalSettingsLanguage.vue';
 
+const t = useI18n()
 const username = ref("")
 const password = ref("")
 const email = ref("")
+const displayLangMenu = ref(false)
 const isCheckedELUAAgreement = ref(false)
+
+function triggerLangMenu(){
+    displayLangMenu.value = !displayLangMenu.value
+}
 
 function getRegisterResult(){
     if (isCheckedELUAAgreement.value == true){
         // check ull input
         if (username.value == "" || password.value == "" || email.value == ""){
-            message.error("用户名，邮箱，密码为必填字段")
+            message.error(t.t('RegisterPage.hidden.bullInputError'))
             return
         }
         let data = {
@@ -29,10 +37,10 @@ function getRegisterResult(){
             url: "/api/user/register",
             data: QueryString.stringify(data)
         }).then(info => {
-            message.success("注册成功")
+            message.success(t.t('RegisterPage.success'))
             console.log(info)
         }).catch(err => {
-            message.error("注册失败：用户名不合法或已经被占用")
+            message.error(t.t('RegisterPage.failed'))
             console.log(err)
         })
     }
@@ -47,29 +55,45 @@ function getRegisterResult(){
     <div class="mainDIv">
         <div class="leftDiv"></div>
         <div class="rightDiv">
-            <h1>注册Memesa</h1>
-            欢迎来到Memesa，一个自由的手书分享网站！通过填写以下信息即可完成注册。
-            <Input style="width: 90%; margin: 5px;" placeholder="用户名" v-model:value="username">
+            <!-- 注册Memesa -->
+            <h1>{{$t('RegisterPage.title')}}</h1>
+            <!-- 欢迎来到Memesa…… -->
+            {{$t('RegisterPage.description')}}
+            <!-- 用户名 -->
+            <Input style="width: 90%; margin: 5px;" :placeholder="$t('RegisterPage.input.username')" v-model:value="username">
                 <template #prefix>
                     <img src="@/assets/user.svg">
                 </template>
             </Input>
-            <Input style="width: 90%; margin: 5px;" placeholder="邮箱" v-model:value="email">
+            <!-- 邮箱 -->
+            <Input style="width: 90%; margin: 5px;" :placeholder="$t('RegisterPage.input.email')" v-model:value="email">
                 <template #prefix>
                     <img src="@/assets/email.svg">
                 </template>
             </Input>
-            <InputPassword style="width: 90%; margin: 5px;" placeholder="密码" v-model:value="password">
+            <!-- 密码 -->
+            <InputPassword style="width: 90%; margin: 5px;" :placeholder="$t('RegisterPage.input.password')" v-model:value="password">
                 <template #prefix>
                     <img src="@/assets/lock.svg">
                 </template>
             </InputPassword>
-            <Checkbox v-model:checked="isCheckedELUAAgreement">我已同意《用户使用协议与条款》</Checkbox><br>
-            <Button type="primary" style="margin: 5px;" @click="getRegisterResult()">注册</Button>
-            已有账号？
+            <!-- 同意用户协议 -->
+            <Checkbox v-model:checked="isCheckedELUAAgreement">{{$t('RegisterPage.agreement')}}</Checkbox><br>
+            <!-- 注册 -->
+            <Button type="primary" style="margin: 5px;" @click="getRegisterResult()">{{$t('RegisterPage.register')}}</Button>
+            {{$t('RegisterPage.isAccountExisted')}}
             <RouterLink to="/login">
-                <Button type="link" style="margin: 5px;">登录</Button>
+                <!-- 登录 -->
+                <Button type="link" style="margin: 5px;">{{$t('RegisterPage.login')}}</Button>
             </RouterLink>
+            <Button style="float: right;" @click="triggerLangMenu">
+                <template #icon>
+                    <img src="@/assets/language.svg" width="20">
+                </template>
+            </Button>
+            <Modal title="Language Preferences" v-bind:visible="displayLangMenu" v-on:ok="refreshPage" v-on:cancel="triggerLangMenu">
+                <generalSettingsLanguage/>
+            </Modal>
         </div>
     </div>
 </template>

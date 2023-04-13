@@ -42,6 +42,24 @@
         "middleword": "or",
         "register": "Register"
     },
+    "RegisterPage": {
+        "title": "Sign Up to Memesa",
+        "description": "Welcome to Memesa, a freely meme artwork sharing website. In dorder to create your account, we will collect some of your information",
+        "input": {
+            "username": "Username",
+            "email": "Email",
+            "password": "Password"
+        },
+        "agreement": "I Agreed Terms of User Agreement and Privacy Policies",
+        "register": "Sign Up",
+        "isAccountExisted": "Already a member?",
+        "login": "Login",
+        "hidden": {
+            "nullInputError": "You must filled up all the blanks to sign up.",
+            "success": "Sign Up Success",
+            "failed": "Sign up failed: Username is already taken."
+        }
+    },
     "UserHomepage": {
         "title": "Profile",
         "mainBox": {

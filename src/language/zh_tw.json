@@ -35,6 +35,31 @@
             "failed": "用戶名或密碼錯誤"
         }
     },
+    "LoginRequireBox": {
+        "title": "你還沒有登錄哦",
+        "description": "登錄Memesa即可解鎖網站的全部功能！",
+        "login": "立即登錄",
+        "middleword": "或",
+        "register": "注冊一個賬號号"
+    },
+    "RegisterPage": {
+        "title": "注冊Memesa",
+        "description": "歡迎來到Memesa，一個自由的手書分享網站！通過填寫以下信息即可注冊",
+        "input": {
+            "username": "用戶名",
+            "email": "郵箱",
+            "password": "密碼"
+        },
+        "agreement": "我已同意《用戶使用協議與條款》",
+        "register": "注冊",
+        "isAccountExisted": "已有帳號？",
+        "login": "登錄",
+        "hidden": {
+            "nullInputError": "用戶名，郵箱，密碼為必填字段",
+            "success": "注冊成功",
+            "failed": "注冊失敗：用戶名不合法或已經被占用"
+        }
+    },
     "UserHomepage": {
         "title": "我",
         "mainBox": {
