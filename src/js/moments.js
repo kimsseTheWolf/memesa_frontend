@@ -32,55 +32,40 @@ function generateAccessToken(){
     })
 }
 
-async function uploadMoment(fileList){
+async function uploadMomentImg(targetFile){
     let accessToken = await generateAccessToken()
     return new Promise((res, rej) => {
-        console.log(fileList.length)
-        if (fileList.length == 0){
-            console.log("No pictures to commit, skipping...")
-            res({status: true, data: ["0", "0", "0", "0"]})
-        }
         // Generate form data
-        let formDataList = []
-        for (let i = 0; i < fileList.length; i++){
-            let targetFormData = new FormData()
-            targetFormData.append("smfile", fileList[i])
-            targetFormData.append("format", "json")
-            formDataList.push(targetFormData)
-        }
-        console.log("FormDataList: ", formDataList)
+        let targetFormData = new FormData()
+        targetFormData.append("smfile", targetFile)
+        targetFormData.append("format", "json")
         // Start Upload the images to the image server
-        let returnList = []
-        for (let i = 0; i < formDataList.length; i++){
-            axios({
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "Authorization": accessToken,
-                },
-                method: "post",
-                url: "/imgAPI/upload",
-                data: formDataList[i],
-            }).then(data => {
-                console.log("Image server response: ", data)
-                if (data.data.success != true && data.data.code != 'image_repeated'){
-                    console.log(data)
-                    res({status: false, data: []})
-                }
-                // collect the url and append to the return list
-                if (data.data.code == 'image_repeated'){
-                    returnList.push(data.data.images)
-                }
-                else {
-                    returnList.push(data.data.data.url)
-                }
-            }).catch(err => {
-                console.log(err)
-                res({status: false, data: []})
-            })
-        }
-        // finish all the steps, return data
-        console.log("Images Uploaded Successfully")
-        res({status: true, data: returnList})
+        axios({
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": accessToken,
+            },
+            method: "post",
+            url: "/imgAPI/upload",
+            data: targetFormData,
+        }).then(data => {
+            console.log("Image server response: ", data)
+            if (data.data.success != true && data.data.code != 'image_repeated'){
+                console.log(data)
+                res({status: false, data: undefined})
+            }
+            // collect the url and append to the return list
+            if (data.data.success != true &&data.data.code == 'image_repeated'){
+                console.log("Image Repeated")
+                res({status: true, data: data.data.images})
+            }
+            else {
+                res({status: true, data: data.data.data.url})
+            }
+        }).catch(err => {
+            console.log(err)
+            res({status: false, data: undefined})
+        })
     })
 
 }
@@ -153,7 +138,7 @@ function getUserMoments(id){
 }
 
 export default{
-    uploadMoment,
+    uploadMomentImg,
     uploadMomentToDatabase,
     getUserMoments
 }
