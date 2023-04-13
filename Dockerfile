@@ -1,13 +1,14 @@
+# Create Production Distribution
 FROM node:18
+COPY ./ /app
+WORKDIR /app
+RUN npm install && npm run build
 
-# Copy the source code
-ADD ./dist ./App
+# Create Server
+FROM nginx
+RUN mkdir /app
+COPY --from=0 /app/dist /app
+COPY ./nginx.conf /etc/nginx/nginx.conf
+EXPOSE 9000
 
-# Set Working directory
-WORKDIR /App
-
-# Initial Programs
-RUN npm install 
-
-# Run the program
-CMD npm run serve
+# matthew is very cool!
