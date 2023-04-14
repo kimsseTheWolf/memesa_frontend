@@ -132,7 +132,7 @@ getUserMomentsInfo()
     </Drawer>
     <div class="main_moments_box">
         <div v-for="i in momentsList" :key="i">
-            <MomentsBox :username="i.userid" :image_url="[i.img1, i.img2, i.img3, i.img4]" :isLiked="false" :uuid="i.uid" :id="i.userid">
+            <MomentsBox :username="i.userid" :image_url="[i.img1, i.img2, i.img3, i.img4]" :isLiked="false" :uuid="i.uid" :id="i.userid" @on-delete="getUserMomentsInfo()">
                 <template #content>
                     {{i.content}}
                 </template>

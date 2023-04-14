@@ -138,11 +138,33 @@ function getUserMoments(id){
 }
 
 function deleteMoments(uuid){
-    
+    return new Promise((res, rej) => {
+        let sendData = {
+            "uuid": uuid
+        }
+        axios({
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": localStorage.getItem("MEMESA_TOKEN")
+            },
+            method: "post",
+            url: "/api/moments/delete",
+            data: qs.stringify(sendData)
+        }).then(data => {
+            if (data.data.Code != 200){
+                res(false)
+            }
+            res(true)
+        }).catch(err => {
+            console.log(err)
+            res(false)
+        })
+    })
 }
 
 export default{
     uploadMomentImg,
     uploadMomentToDatabase,
-    getUserMoments
+    getUserMoments,
+    deleteMoments
 }

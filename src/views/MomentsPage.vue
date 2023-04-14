@@ -30,10 +30,13 @@ function isLoggedIn(){
             </RouterLink>
         </MenuItem>
         <MenuItem>
-        <RouterLink to="/moment/myMoments">
-            我的动态
-        </RouterLink>
-    </MenuItem>
+            <template #icon>
+                <img src="@/assets/postcard.svg" width="25px">
+            </template>
+            <RouterLink to="/moment/myMoments">
+                我的动态
+            </RouterLink>
+        </MenuItem>
         
     </Menu>
     <RouterView>

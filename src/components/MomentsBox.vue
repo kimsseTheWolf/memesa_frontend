@@ -1,10 +1,12 @@
 <script setup>
-import { defineProps, computed, ref } from 'vue';
-import { Avatar, Image, ImagePreviewGroup, Button, Drawer, Divider, InputSearch } from 'ant-design-vue';
+import { defineProps, computed, ref, defineEmits } from 'vue';
+import { Avatar, Image, ImagePreviewGroup, Button, Drawer, Divider, InputSearch, message } from 'ant-design-vue';
 import avatar from '@/js/avatar';
 import user from '@/js/user';
+import moments from '@/js/moments';
 
 const props = defineProps(['username', 'image_url', 'isLiked', 'uuid', 'id'])
+const emit = defineEmits(['onDelete'])
 const isLiked = ref(props.isLiked)
 const uuid = ref(props.uuid)
 const avatarAddr = ref("")
@@ -45,6 +47,16 @@ async function getUserInfo(){
     username.value = result.username
 }
 
+async function handleDelete(uuid){
+    let result = await moments.deleteMoments(uuid)
+    if (!result){
+        message.error("删除失败")
+        return
+    }
+    message.success("删除成功")
+    emit("onDelete")
+}
+
 
 getTargetUserAvatar()
 getUserInfo()
@@ -80,7 +92,7 @@ getUserInfo()
             <Button type="text" style="float: right;" @click="showDetails = !showDetails">
                 查看详细信息
             </Button>
-            <Button type="text" danger class="delete_button" v-if="displayDeleteButton">
+            <Button type="text" danger class="delete_button" v-if="displayDeleteButton" @click="handleDelete(props.uuid)">
                 删除
             </Button>
         </div>
