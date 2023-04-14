@@ -47,6 +47,7 @@ function getLoginResult(){
         console.log(info)
         const token = info.data.Data.token
         localStorage.setItem("MEMESA_TOKEN", token)
+        localStorage.setItem("MEMESA_ID", info.data.Data.id)
         // send a request to get the user avatar
         let avatarAddress = avatar.getUserAvatarAddress(username.value)
         localStorage.setItem("MEMESA_AVATAR", avatarAddress)

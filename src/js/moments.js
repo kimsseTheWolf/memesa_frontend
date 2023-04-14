@@ -137,6 +137,10 @@ function getUserMoments(id){
     })
 }
 
+function deleteMoments(uuid){
+    
+}
+
 export default{
     uploadMomentImg,
     uploadMomentToDatabase,

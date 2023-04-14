@@ -33,7 +33,7 @@ getUserMomentsInfo()
 </script>
 <template>
     <Result title="这里什么都没有哦" sub-title="可能这个人还没有上传过动态……" v-if="showNoMoments"/>
-    <div class="main_moments_box">
+    <div class="main_moments_box" style="margin-top: 5px;">
         <div v-for="i in momentsList" :key="i">
             <MomentsBox :username="i.userid" :image_url="[i.img1, i.img2, i.img3, i.img4]" :isLiked="false" :uuid="i.uid" :id="i.userid">
                 <template #content>

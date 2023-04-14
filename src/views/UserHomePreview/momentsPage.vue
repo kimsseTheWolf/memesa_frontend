@@ -1,10 +1,14 @@
 <script setup>
 import { Empty } from 'ant-design-vue';
+import momentsGeneralVue from '../moments/momentsGeneral.vue';
+import { computed } from '@vue/reactivity';
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
+const targetUserId = computed(()=>{
+    return route.params.id
+})
 </script>
 <template>
-    <Empty>
-        <template #description>
-            TA还没有上传过动态
-        </template>
-    </Empty>
+    <momentsGeneralVue :targetMode="targetUserId"/>
 </template>
