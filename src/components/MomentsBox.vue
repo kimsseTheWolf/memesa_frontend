@@ -4,6 +4,7 @@ import { Avatar, Image, ImagePreviewGroup, Button, Drawer, Divider, InputSearch,
 import avatar from '@/js/avatar';
 import user from '@/js/user';
 import moments from '@/js/moments';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps(['username', 'image_url', 'isLiked', 'uuid', 'id'])
 const emit = defineEmits(['onDelete'])
@@ -12,6 +13,7 @@ const uuid = ref(props.uuid)
 const avatarAddr = ref("")
 const username = ref("")
 const showDetails = ref(false)
+const t = useI18n()
 const displayDeleteButton = computed(()=>{
     return localStorage.getItem("MEMESA_ID") == props.id
 })
@@ -50,10 +52,10 @@ async function getUserInfo(){
 async function handleDelete(uuid){
     let result = await moments.deleteMoments(uuid)
     if (!result){
-        message.error("删除失败")
+        message.error(t.t('MomentsBox.hidden.deleteFailed'))
         return
     }
-    message.success("删除成功")
+    message.success(t.t('MomentsBox.hidden.deleteSuccess'))
     emit("onDelete")
 }
 
@@ -90,14 +92,14 @@ getUserInfo()
                 <img src="@/assets/comments.svg" height="20">
             </Button>
             <Button type="text" style="float: right;" @click="showDetails = !showDetails">
-                查看详细信息
+                {{$t('MomentsBox.viewDetails')}}
             </Button>
             <Button type="text" danger class="delete_button" v-if="displayDeleteButton" @click="handleDelete(props.uuid)">
-                删除
+                {{$t('MomentsBox.delete')}}
             </Button>
         </div>
     </div>
-    <Drawer title="详情" placement="right" :visible="showDetails" @close="showDetails = !showDetails" width="600px">
+    <Drawer :title="$t('MomentsBox.detailsDrawer.title')" placement="right" :visible="showDetails" @close="showDetails = !showDetails" width="600px">
         <div class="header_box">
             <Avatar :size="40" :src="avatarAddr">
                 <!-- <img :src="avatarAddr"> -->
@@ -121,11 +123,11 @@ getUserInfo()
             </Button>
         </div>
         <Divider/>
-        <h2>评论</h2>
+        <h2>{{$t('MomentsBox.detailsDrawer.comments')}}</h2>
         <template #footer>
-            <InputSearch placeholder="说些什么吧">
+            <InputSearch :placeholder="$t('MomentsBox.detailsDrawer.placeholder')">
                 <template #enterButton>
-                    <Button type="primary">发布</Button>
+                    <Button type="primary">{{$t('MomentsBox.detailsDrawer.releaseComment')}}</Button>
                 </template>
             </InputSearch>
         </template>

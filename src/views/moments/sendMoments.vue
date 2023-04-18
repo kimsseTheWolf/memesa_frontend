@@ -2,22 +2,24 @@
 import { Textarea, Upload, Tooltip, Switch, Button, message } from 'ant-design-vue';
 import { ref } from 'vue';
 import moments from '@/js/moments';
+import { useI18n } from 'vue-i18n';
 const uploadDrawerVisible = ref(false)
 const submitPublicPost = ref(true)
 const fileList = ref([])
 const momentsList = ref([])
 const content = ref("")
 const momentIsUploading = ref(false)
+const t = useI18n()
 
 function beforeUpload(file){
     // check whether the file could fulfill the upload requirement
     if (file.type != 'image/*'){
         fileList.value.splice(fileList.value.indexOf(file), 1)
-        message.error("目前只能上传图片哦QAQ")
+        message.error(t.t("SendMoments.hidden.pictureWarning"))
     }
     if (!(file.size / 1024 / 1024 <= 2)){
         fileList.value.splice(fileList.value.indexOf(file), 1)
-        message.error("文件太大啦！")
+        message.error(t.t("SendMoments.hidden.bigFileWarning"))
     }
 }
 
@@ -34,12 +36,12 @@ async function listProcess(list){
 
 async function uploadMoments(){
     momentIsUploading.value = true
-    message.info("请等待所有图片上传完成")
+    message.info(t.t("SendMoments.hidden.waitUpload"))
     let imageURLList = []
     for (let i = 0; i < fileList.value.length; i++){
         let result = await moments.uploadMomentImg(fileList.value[i])
         if (result.status != true){
-            message.error("上传失败")
+            message.error(t.t("SendMoments.hidden.uploadError"))
             return
         }
         imageURLList.push(result.data)
@@ -51,10 +53,10 @@ async function uploadMoments(){
     // submit the list
     let result = await moments.uploadMomentToDatabase(content.value, processedList, 1)
     if (!result.status){
-        message.error("发布失败")
+        message.error(t.t("SendMoments.hidden.failed"))
     }
     else{
-        message.success("发布成功")
+        message.success(t.t("SendMoments.hidden.success"))
     }
     momentIsUploading.value = false
     getUserMomentsInfo()
@@ -74,19 +76,19 @@ async function getUserMomentsInfo(){
 </script>
 <template>
     <h2 style="margin-top: 15px;">
-        发布新动态
+        {{$t('SendMoments.title')}}
     </h2>
-    <Textarea :bordered="true" placeholder="说些什么吧" style="margin-top: 5px;" v-model:value="content"></Textarea>
+    <Textarea :bordered="true" :placeholder="$t('SendMoments.textAreaPlaceholder')" style="margin-top: 5px;" v-model:value="content"></Textarea>
     <input type="file" accept="image/*" @change="getPicture($event)" style="margin-top: 5px;">
     <Upload list-type="picture-card" :max-count="4" v-model:file-list="fileList" :before-upload="beforeUpload">
     </Upload>
     <Tooltip>
         <template #title>
-            公开的动态可以被社区内所有的人看到。若不希望请关闭此选项！
+            {{$t('SendMoments.publicSwitch.description')}}
         </template>
-        这个动态是公开的
+        {{$t('SendMoments.publicSwitch.purpose')}}
     </Tooltip>
     <Switch v-model:checked="submitPublicPost"/><br>
-    <Button type="primary" @click="uploadMoments()" :loading="momentIsUploading">发布</Button>
-    <Button @click="uploadDrawerVisible = false">取消</Button>
+    <Button type="primary" @click="uploadMoments()" :loading="momentIsUploading">{{$t('SendMoments.submit')}}</Button>
+    <Button @click="uploadDrawerVisible = false">{{$t('SendMoments.cancel')}}</Button>
 </template>

@@ -104,5 +104,44 @@
             "userid": "未知UID",
             "description": "这个人很懒，什么也没写……"
         }
+    },
+    "MomentsBox": {
+        "viewDetails": "查看详细信息",
+        "delete": "删除",
+        "detailsDrawer": {
+            "title": "详情",
+            "comments": "评论",
+            "releaseComment": "发布",
+            "placeholder": "说些什么吧"
+        },
+        "hidden":{
+            "deleteSuccess": "删除成功",
+            "deleteFailed": "删除失败"
+        }
+    },
+    "MyMoments": {
+        "sendNewMoments": "发布新动态",
+        "emptyResult": {
+            "title": "你还没有发布过动态",
+            "subTitle": "点击左上方发布按钮发布你的第一个动态吧！"
+        }
+    },
+    "SendMoments": {
+        "title": "发布新动态",
+        "textAreaPlaceholder": "说些什么吧",
+        "publicSwitch": {
+            "description": "公开的动态可以被社区内所有的人看到。若不希望请关闭此选项！",
+            "purpose": "这个动态是公开的"
+        },
+        "submit": "发布",
+        "cancel": "取消",
+        "hidden": {
+            "pictureWarning": "目前只能上传图片哦QAQ",
+            "bigFileWarning": "文件太大啦！",
+            "waitUpload": "请等待所有图片上传完成",
+            "uploadError": "上传失败",
+            "success": "发布成功",
+            "failed": "发布失败"
+        }
     }
 }
