@@ -65,7 +65,12 @@ const routes = [
   {
     path: '/faq',
     name: ' Q&A Section',
-    component: ()=>import('@/views/QA.vue')
+    component: ()=>import('@/views/QA.vue'),
+  },
+  {
+    path: '/faq/changelog', 
+    name: 'changelog',
+    component: ()=>import('@/views/qa/changelogPage.vue')
   },
   {
     path: '/moment',
@@ -83,6 +88,10 @@ const routes = [
       {
         path: 'myMoments',
         component: ()=>import('@/views/moments/myMoments.vue')
+      },
+      {
+        path: 'send',
+        component: ()=>import('@/views/moments/sendMoments.vue')
       }
     ]
   },

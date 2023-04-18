@@ -109,7 +109,9 @@ async function getUserMomentsInfo(){
 getUserMomentsInfo()
 </script>
 <template>
-    <Button type="primary" style="margin-top: 5px;" @click="triggerUploadDrawer()">发布新动态</Button>
+    <RouterLink to="/moment/send">
+        <Button type="primary" style="margin-top: 5px;" @click="triggerUploadDrawer()">发布新动态</Button>
+    </RouterLink>
     <Result title="你还没有发布过动态" sub-title="点击左上方发布按钮发布你的第一个动态吧！" v-if="showNoMoments"/>
     <Drawer title="发布新动态" placement="top" :visible="uploadDrawerVisible" @close="triggerUploadDrawer()" height="600px" :rows="6">
         <template #extra>
