@@ -10,5 +10,5 @@ const targetUserId = computed(()=>{
 })
 </script>
 <template>
-    <momentsGeneralVue :targetMode="targetUserId"/>
+    <momentsGeneralVue :targetMode="targetUserId" :enablePrivate="true"/>
 </template>

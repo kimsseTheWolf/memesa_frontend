@@ -98,7 +98,7 @@ async function uploadMomentToDatabase(content, urlList, isPublic){
             data: qs.stringify({
                 images: urlList,
                 content: content,
-                isPublic: isPublic
+                public: isPublic
             }, {indices: false})
         }).then(data => {
             if (data.data.Code != 200){

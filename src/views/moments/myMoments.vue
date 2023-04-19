@@ -115,7 +115,7 @@ getUserMomentsInfo()
     <Result :title="$t('MyMoments.emptyResult.title')" :sub-title="$t('MyMoments.emptyResult.subTitle')" v-if="showNoMoments"/>
     <div class="main_moments_box">
         <div v-for="i in momentsList" :key="i">
-            <MomentsBox :username="i.userid" :image_url="[i.img1, i.img2, i.img3, i.img4]" :isLiked="false" :uuid="i.uid" :id="i.userid" @on-delete="getUserMomentsInfo()">
+            <MomentsBox :username="i.userid" :image_url="[i.img1, i.img2, i.img3, i.img4]" :isLiked="false" :uuid="i.uid" :id="i.userid" @on-delete="getUserMomentsInfo()" :date="i.date">
                 <template #content>
                     {{i.content}}
                 </template>

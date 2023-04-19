@@ -6,7 +6,7 @@ import user from '@/js/user';
 import moments from '@/js/moments';
 import { useI18n } from 'vue-i18n';
 
-const props = defineProps(['username', 'image_url', 'isLiked', 'uuid', 'id'])
+const props = defineProps(['username', 'image_url', 'isLiked', 'uuid', 'id', 'date'])
 const emit = defineEmits(['onDelete'])
 const isLiked = ref(props.isLiked)
 const uuid = ref(props.uuid)
@@ -71,11 +71,14 @@ getUserInfo()
             <Avatar :size="40" :src="avatarAddr">
                 <!-- <img :src="avatarAddr"> -->
             </Avatar>
-            <div class="username">
+            <span style="display: inline-block;">
+                <div class="username">
                 <RouterLink :to="'/user/'+props.id+'/video'" style="color:black">
                     {{ username }}
                 </RouterLink>
-            </div>
+                </div>
+            </span>
+            
         </div>
         <div class="moments_content">
             <slot name="content" class="content"></slot><br>
@@ -96,6 +99,7 @@ getUserInfo()
             <Button type="text" style="float: right;" @click="showDetails = !showDetails">
                 {{$t('MomentsBox.viewDetails')}}
             </Button>
+            <Button type="text">{{ date }}</Button>
             <Button type="text" danger class="delete_button" v-if="displayDeleteButton" @click="handleDelete(props.uuid)">
                 {{$t('MomentsBox.delete')}}
             </Button>
@@ -123,6 +127,7 @@ getUserInfo()
                 <img src="@/assets/like.svg" height="20" v-if="isLiked == false">
                 <img src="@/assets/liked.svg" height="20" v-else>
             </Button>
+            <Button type="text">{{ date }}</Button>
         </div>
         <Divider/>
         <h2>{{$t('MomentsBox.detailsDrawer.comments')}}</h2>
@@ -155,6 +160,10 @@ getUserInfo()
     display: inline-block;
     margin-left: 7px;
     font-size: larger;
+    text-decoration: none;
+}
+.date{
+    margin-left: 7px;
     text-decoration: none;
 }
 .image{
