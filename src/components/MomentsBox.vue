@@ -42,6 +42,8 @@ async function getTargetUserAvatar(){
 }
 
 async function getUserInfo(){
+    console.log("User ID In MomentsBox")
+    console.log(props.id)
     let result = await user.getUserBasicInfo(props.id)
     if (result == null){
         return

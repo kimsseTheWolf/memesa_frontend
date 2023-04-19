@@ -137,6 +137,32 @@ function getUserMoments(id){
     })
 }
 
+function getUserSubscriptionMoments(subscribeList, startID, queryNum){
+    return new Promise((res, rej) => {
+        axios({
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": localStorage.getItem("MEMESA_TOKEN")
+            },
+            method: "post",
+            url: "/api/moments/getSubscriptionMoments",
+            data: qs.stringify({
+                users: subscribeList,
+                startID: startID,
+                queryNum: queryNum
+            }, {indices: false})
+        }).then(data => {
+            if (data.data.Code != 200){
+                res({status: false, data: null})
+            }
+            res({status: true, data: data.data.Data})
+        }).catch(err => {
+            console.log(err)
+            res({status: false, data: null})
+        })
+    })
+}
+
 function deleteMoments(uuid){
     return new Promise((res, rej) => {
         let sendData = {
@@ -166,5 +192,6 @@ export default{
     uploadMomentImg,
     uploadMomentToDatabase,
     getUserMoments,
-    deleteMoments
+    deleteMoments,
+    getUserSubscriptionMoments
 }
